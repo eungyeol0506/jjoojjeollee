@@ -1,0 +1,7 @@
+/gitignore/
+
+/backend/.gradle/
+/backend/.idea/
+/backend/build/
+/backend/out/
+/backend/src/main/resources/application.yaml
