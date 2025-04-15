@@ -4,8 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "user_profiles")
 @Getter
+@Table(name = "user_profiles")
+@SequenceGenerator( name = "userProfile_seq_generator",
+        sequenceName = "user_profiles_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class UserProfile {
     @Id @GeneratedValue
     @Column(name = "profile_no")

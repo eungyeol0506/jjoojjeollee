@@ -1,16 +1,23 @@
 package app.project.jjoojjeollee.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Table(name = "notifications")
+@Getter
 public class Notification {
     @Id @GeneratedValue
-    @Column(name="notification_no")
+    @Column(name = "notification_no")
     private Long no;
 
-    @OneToOne
-    private User target;
-
+    @Column(name = "message", nullable = false)
     private String message;
+
+    @Column(name = "url")
     private String url;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_no")
+    private User target;
 }

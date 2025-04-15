@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -10,9 +11,14 @@ import java.time.LocalDateTime;
         @UniqueConstraint(name="uk_users_email", columnNames = {"email"}),
         @UniqueConstraint(name="uk_users_id", columnNames = {"id"})
 })
+@SequenceGenerator( name = "user_seq_generator",
+                    sequenceName = "users_seq",
+                    initialValue = 1,
+                    allocationSize = 1
+                    )
 @Getter
 public class User {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGenerator")
     @Column(name = "user_no", updatable = false)
     private Long no;
 
@@ -25,11 +31,12 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name="email_verified", nullable = false)
-    private Boolean emailVerified;
+    @Column(name="email_verified", nullable = false, length = 1)
+    private String emailVerified;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     private LocalDateTime createdAt;
+
     @Column(name="withdrawn_at")
     private LocalDateTime withdrawnAt;
     @Column(name="locked_at")

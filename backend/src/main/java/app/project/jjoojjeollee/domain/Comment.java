@@ -1,21 +1,27 @@
 package app.project.jjoojjeollee.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Table(name = "comments")
+@Getter
 public class Comment {
     @Id @GeneratedValue
-    @Column(name="comment_no")
+    @Column(name = "comment_no")
     private Long no;
 
+    @Column(name = "contents", nullable = false, length = 100)
     private String contents;
-
-    @ManyToOne
-    private DiaryEntry diaryEntry;
 
     @Embedded
     private ModificationInfo modificationInfo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "entry_no")
+    private DiaryEntry diaryEntry;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_no")
     private Comment parent;
 }
