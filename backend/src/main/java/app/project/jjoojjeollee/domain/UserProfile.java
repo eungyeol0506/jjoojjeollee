@@ -12,7 +12,7 @@ import lombok.Getter;
         allocationSize = 1
 )
 public class UserProfile {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userProfile_seq_generator")
     @Column(name = "profile_no")
     private Long no;
 
