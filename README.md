@@ -33,6 +33,7 @@
 │       ├── exception/                    # 예외처리 핸들러
 │       ├── repository/                   # DAO 계층
 │       ├── service/                      # 서비스 계층 (조립)
+│       ├── param/                        # DTO 
 │       └── jjoojjeolleeApplication.java  # 스프링 부트 앱
 │
 ├── frontend/
