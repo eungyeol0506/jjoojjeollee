@@ -1,11 +1,28 @@
 # 쭈쩌리
-> REST API 기반으로 일기중심의 일상 공유 SNS
+> REST API 기반으로 구현한 일기장 중심의 일상 공유 SNS 입니다.
 
-## 팀
+## Team
+|Name|GitHUb|Role|
+|----|----|----|
+|연은결|[eungyeol0506](https://github.com/eungyeol0506/)|BE|
+|배은지||FE|
 
-## 프로젝트 목표
+## Project Overview
+### demo: 
+### Project: 쭈쩌리(Jjoojjeollee) 
+이 프로젝트의 목표는 ~ 제공하는 웹 서비스 **쭈쩌리**를 구축하는 것입니다. 
+~~사용자에게 직접적으로 무엇을 제공할 수 있는지 서술~~
 
-## 사용 기슬
+~~중점으로 둔 기술은 무엇인지, 왜? 그렇게 했는지~~
+
+#### 관련 문서
+> wiki 작성 중
+
+## Technology Stack
+
+## System Architechture
+
+## Deployment Setup
 
 ## Project Structure
 ```
@@ -23,7 +40,5 @@
 ├── .github/workflows/                   # GitHub Actions CI/CD 설정
 └── README.md                            # 프로젝트 문서
 ```
-
-## 진행 상황
 
 ## 기타
