@@ -6,10 +6,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Constraint(validatedBy = {DuplicatedEmailValidator.class})
+@Constraint(validatedBy = {DuplicatedIdValidator.class})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DuplicatedEmailConstraint {
-    String message() default "중복된 이메일";
+public @interface DuplicatedIdConstraint {
+    String message() default "중복된 아이디";
 
     Class<?>[] groups() default {};
 
