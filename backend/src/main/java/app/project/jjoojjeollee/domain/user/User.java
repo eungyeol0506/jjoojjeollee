@@ -58,7 +58,6 @@ public class User {
         user.setId(id);
         user.setPw(pw);
         user.setEmail(email);
-        user.setEmailVerified("Y");
         user.setCreatedAt(LocalDateTime.now());
 
         return user;
@@ -68,11 +67,13 @@ public class User {
      * 사용할 수 있는 사용자인지 체크
      */
     public UserStatus getUserStatus(){
-        long daysDiff = ChronoUnit.DAYS.between(LocalDateTime.now(), withdrawnAt);
-        if(daysDiff > 30 && this.withdrawnAt != null){
-            return UserStatus.WITHDRAWN;
-        } else if(this.withdrawnAt != null) {
-            return UserStatus.WITHDRAWN_WAIT;
+        if (this.withdrawnAt != null){
+            long daysDiff = ChronoUnit.DAYS.between(LocalDateTime.now(), this.withdrawnAt);
+            if(daysDiff > 30){
+                return UserStatus.WITHDRAWN;
+            }else{
+                return UserStatus.WITHDRAWN_WAIT;
+            }
         } else if (this.lockedAt != null) {
             return UserStatus.LOCKED;
         } else if (this.emailVerified.equals("N")) {
@@ -90,6 +91,15 @@ public class User {
     }
 
     /**
+     * 재인증 메서드
+     */
+    public void verify(){
+        this.emailVerified = "Y";
+        this.withdrawnAt = null;
+        this.lockedAt = null;
+    }
+
+    /**
      * 사용자 잠금 메서드
      */
     public void lock(){
@@ -101,8 +111,8 @@ public class User {
      * 프로필 설정 메서드
      */
     public void setupUser(String nickname, String lineMessage, Image image){
-        UserProfile userProfile = UserProfile.createUserProfile(nickname, lineMessage, image);
-        this.profile = userProfile;
+        this.profile = UserProfile.createUserProfile(nickname, lineMessage, image);
+//        this.profile = userProfile;
     }
 
 
