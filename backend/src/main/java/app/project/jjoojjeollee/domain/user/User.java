@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter @Setter(AccessLevel.PROTECTED)
@@ -63,6 +64,23 @@ public class User {
         return user;
     }
 
+    /**
+     * 사용할 수 있는 사용자인지 체크
+     */
+    public UserStatus getUserStatus(){
+        long daysDiff = ChronoUnit.DAYS.between(LocalDateTime.now(), withdrawnAt);
+        if(daysDiff > 30 && this.withdrawnAt != null){
+            return UserStatus.WITHDRAWN;
+        } else if(this.withdrawnAt != null) {
+            return UserStatus.WITHDRAWN_WAIT;
+        } else if (this.lockedAt != null) {
+            return UserStatus.LOCKED;
+        } else if (this.emailVerified.equals("N")) {
+            return UserStatus.UNVERIFIED;
+        }
+
+        return UserStatus.VERIFIED;
+    }
     /**
      * 사용자 탈퇴 메서드
      */
