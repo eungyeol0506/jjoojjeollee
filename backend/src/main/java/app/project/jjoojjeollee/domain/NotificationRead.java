@@ -1,5 +1,6 @@
 package app.project.jjoojjeollee.domain;
 
+import app.project.jjoojjeollee.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
