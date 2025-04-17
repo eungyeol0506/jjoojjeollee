@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.service;
+package app.project.jjoojjeollee.service.user;
 
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.domain.user.UserStatus;
@@ -18,11 +18,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 회원가입 메서드
+     */
     public Long join(UserRegisterParam userRegisterParam){
         User user = User.createUser( userRegisterParam.getId(),
                                      passwordEncoder.encode(userRegisterParam.getPw()),
                                      userRegisterParam.getEmail()
                                     );
+        // email 인증 로직 미구현으로 우선 항상 인증처리 함
         user.verify();
         return userRepository.save(user);
     }
@@ -33,28 +37,27 @@ public class UserService {
 
         if(loginParam.isEmail()){
             String email = loginParam.getId();
-            findUser = userRepository.findByEmail(email).orElseThrow(
-                    ()->new IllegalStateException("사용자가 존재하지 않음")
-            );
+            findUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         }else{
             String id = loginParam.getId();
-            findUser = userRepository.findById(id).orElseThrow(
-                    ()->new IllegalStateException("사용자가 존재하지 않음")
-            );
+            findUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         }
 
         String pw = loginParam.getPw();
         if( !(passwordEncoder.matches(pw, findUser.getPw())) ) {
-            throw new IllegalStateException("비밀번호 매칭되지 않음");
+            throw new PasswordMismatchException();
         }
 
         UserStatus status = findUser.getUserStatus();
-        if(! status.equals(UserStatus.VERIFIED) ){
-            throw new IllegalStateException("사용 불가능한 상태");
+        if(!status.isAccessible()){
+            if(status.isRecoverable()){
+                throw new RecoverableUserException(status);
+            }
+            throw new WithdrawnUserException();
         }
+
         return findUser;
     }
-
 
     public void withdraw(Long userNo){
         User user = userRepository.findByNo(userNo);
@@ -65,4 +68,6 @@ public class UserService {
         User user = userRepository.findByNo(userNo);
         user.verify();
     }
+
+
 }

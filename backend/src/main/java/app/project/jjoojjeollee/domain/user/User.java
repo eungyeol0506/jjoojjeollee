@@ -66,21 +66,22 @@ public class User {
     /**
      * 사용할 수 있는 사용자인지 체크
      */
+    @Transient
     public UserStatus getUserStatus(){
         if (this.withdrawnAt != null){
             long daysDiff = ChronoUnit.DAYS.between(LocalDateTime.now(), this.withdrawnAt);
             if(daysDiff > 30){
                 return UserStatus.WITHDRAWN;
             }else{
-                return UserStatus.WITHDRAWN_WAIT;
+                return UserStatus.WITHDRAW_PENDING;
             }
         } else if (this.lockedAt != null) {
             return UserStatus.LOCKED;
         } else if (this.emailVerified.equals("N")) {
-            return UserStatus.UNVERIFIED;
+            return UserStatus.EMAIL_NOT_VERIFIED;
         }
 
-        return UserStatus.VERIFIED;
+        return UserStatus.ACTIVE;
     }
     /**
      * 사용자 탈퇴 메서드

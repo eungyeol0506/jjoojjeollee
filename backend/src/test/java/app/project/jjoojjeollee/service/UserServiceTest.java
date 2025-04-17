@@ -4,6 +4,10 @@ import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
 import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import app.project.jjoojjeollee.repository.UserRepository;
+import app.project.jjoojjeollee.service.user.PasswordMismatchException;
+import app.project.jjoojjeollee.service.user.RecoverableUserException;
+import app.project.jjoojjeollee.service.user.UserNotFoundException;
+import app.project.jjoojjeollee.service.user.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -68,7 +70,7 @@ class UserServiceTest {
             Throwable exception = Assertions.catchException(() -> userService.login(userLoginParam));
 
             //then
-            Assertions.assertThat(exception).isInstanceOf(IllegalStateException.class);
+            Assertions.assertThat(exception).isInstanceOf(UserNotFoundException.class);
         }
 
         @DisplayName("비밀번호 불일치로 로그인 실패")
@@ -81,8 +83,7 @@ class UserServiceTest {
             //when
             Throwable exception = Assertions.catchException(() -> userService.login(userLoginParam));
             //then
-            Assertions.assertThat(exception).isInstanceOf(IllegalStateException.class);
-            Assertions.assertThat(exception).hasMessageContaining("비밀번호");
+            Assertions.assertThat(exception).isInstanceOf(PasswordMismatchException.class);
         }
 
         @DisplayName("사용가능하지 않은 사용자 상태로 실패")
@@ -96,8 +97,7 @@ class UserServiceTest {
             //when
             Throwable exception = Assertions.catchException(() -> userService.login(userLoginParam));
             //then
-            Assertions.assertThat(exception).isInstanceOf(IllegalStateException.class);
-            Assertions.assertThat(exception).hasMessageContaining("상태");
+            Assertions.assertThat(exception).isInstanceOf(RecoverableUserException.class);
         }
     }
 }
