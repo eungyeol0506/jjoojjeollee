@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -32,7 +35,10 @@ public class UserApi {
         User user = userService.login(param);
         // jwt 토큰 발급 과정으로 변경 필요
         session.setAttribute("user", user.getNo());
-        return ResponseEntity.ok(ApiResponse.success(user));
+        Map<String, Object> data = new HashMap<>();
+        data.put("user", user);
+
+        return ResponseEntity.ok(ApiResponse.success(data));
     }
 
     @PostMapping("logout")
