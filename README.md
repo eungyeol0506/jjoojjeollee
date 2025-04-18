@@ -43,3 +43,6 @@
 ```
 
 ## 기타
+> 도움받은 자료
+> - [문서작성 및 프로젝트 전체 구조](https://github.com/prgrms-be-devcourse/NBE4-5-3-Team09)
+> - [도메인 모델 패턴 참고](https://github.com/gothinkster/spring-boot-realworld-example-app/)

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -17,14 +19,24 @@ class UserRepositoryTest {
     @Autowired UserRepository userRepository;
 
     @Test
-    @DisplayName("새로운 사용자 저장(persist) 성공")
+    @DisplayName("사용자 저장 및 조회")
     void save() {
-        User user = User.createUser("test", "test", "test@test.com");
+        User user = User.createUser("testId", "testPw", "test@test.com");
 
-        Long id = userRepository.save(user);
+        Long no = userRepository.save(user);
+        User findUser = userRepository.findByNo(no);
 
-        User findUser = userRepository.findByNo(id);
-        assertEquals(user, findUser, "동일한 객체");
-        Assertions.assertThat(id).isNotNull();
+        assertEquals(user, findUser, "저장하고 사용자와 조회한 사용자가 동일함");
+    }
+
+    @DisplayName("이메일로 사용자 조회")
+    @Test
+    void findByEmail(){
+        User user = User.createUser("testId", "testPw", "test@test.com");
+        userRepository.save(user);
+
+        Optional<User> findUser = userRepository.findByEmail(user.getEmail());
+
+        Assertions.assertThat(findUser).isPresent();
     }
 }

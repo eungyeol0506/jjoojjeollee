@@ -15,4 +15,8 @@ public class UserLoginParam {
     private String id;
     @NotBlank(message = "비밀번호는 필수값입니다!")
     private String pw;
+
+    public boolean isEmail(){
+        return id.contains("@");
+    }
 }

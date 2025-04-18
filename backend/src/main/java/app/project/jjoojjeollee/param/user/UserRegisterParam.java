@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRegisterParam {
     @NotBlank(message = "필수값을 입력해주세요")
+    @DuplicatedIdConstraint
     private String id;
 
     @NotBlank(message = "필수값을 입력해주세요")

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter @Setter(AccessLevel.PROTECTED)
@@ -57,18 +58,46 @@ public class User {
         user.setId(id);
         user.setPw(pw);
         user.setEmail(email);
-        user.setEmailVerified("Y");
         user.setCreatedAt(LocalDateTime.now());
 
         return user;
     }
 
     /**
+     * 사용할 수 있는 사용자인지 체크
+     */
+    @Transient
+    public UserStatus getUserStatus(){
+        if (this.withdrawnAt != null){
+            long daysDiff = ChronoUnit.DAYS.between(LocalDateTime.now(), this.withdrawnAt);
+            if(daysDiff > 30){
+                return UserStatus.WITHDRAWN;
+            }else{
+                return UserStatus.WITHDRAW_PENDING;
+            }
+        } else if (this.lockedAt != null) {
+            return UserStatus.LOCKED;
+        } else if (this.emailVerified.equals("N")) {
+            return UserStatus.EMAIL_NOT_VERIFIED;
+        }
+
+        return UserStatus.ACTIVE;
+    }
+    /**
      * 사용자 탈퇴 메서드
      */
     public void withdraw(){
         this.emailVerified = "N";
         this.withdrawnAt = LocalDateTime.now();
+    }
+
+    /**
+     * 재인증 메서드
+     */
+    public void verify(){
+        this.emailVerified = "Y";
+        this.withdrawnAt = null;
+        this.lockedAt = null;
     }
 
     /**
@@ -83,8 +112,8 @@ public class User {
      * 프로필 설정 메서드
      */
     public void setupUser(String nickname, String lineMessage, Image image){
-        UserProfile userProfile = UserProfile.createUserProfile(nickname, lineMessage, image);
-        this.profile = userProfile;
+        this.profile = UserProfile.createUserProfile(nickname, lineMessage, image);
+//        this.profile = userProfile;
     }
 
 
