@@ -6,9 +6,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 @Entity
-@Getter @Setter(AccessLevel.PROTECTED)
+@Getter @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_profiles")
 @SequenceGenerator( name = "userProfile_seq_generator",
@@ -35,11 +36,24 @@ public class UserProfile {
     @JoinColumn(name = "user_no")
     private User user;
 
+    /**
+     * 프로필 생성 메서드
+     */
     public static UserProfile createUserProfile(String nickname, String lineMessage, Image profileImage) {
         UserProfile userProfile = new UserProfile();
         userProfile.setNickname(nickname);
-        userProfile.setLineMessage(lineMessage);
+        userProfile.setLineMessage(StringUtils.hasText(lineMessage) ? lineMessage : null);
         userProfile.setProfileImage(profileImage);
         return userProfile;
     }
+
+    /**
+     * 기존 프로필 수정 메서드
+     */
+    public void updateUserProfile(String nickname, String lineMessage, Image profileImage) {
+        this.nickname = nickname;
+        this.lineMessage = StringUtils.hasText(lineMessage) ? lineMessage : null;
+        this.profileImage = profileImage;
+    }
+
 }

@@ -1,8 +1,10 @@
 package app.project.jjoojjeollee.service.user;
 
+import app.project.jjoojjeollee.domain.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.domain.user.UserStatus;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
+import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
 import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import app.project.jjoojjeollee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -21,6 +23,7 @@ public class UserService {
     /**
      * 회원가입 메서드
      */
+    @Transactional
     public Long join(UserRegisterParam userRegisterParam){
         User user = User.createUser( userRegisterParam.getId(),
                                      passwordEncoder.encode(userRegisterParam.getPw()),
@@ -30,9 +33,10 @@ public class UserService {
         user.verify();
         return userRepository.save(user);
     }
-
-    @Transactional(readOnly = true)
-    public User login(UserLoginParam loginParam){
+    /**
+     *  로그인 메서드
+     */
+    public Long login(UserLoginParam loginParam){
         User findUser;
 
         if(loginParam.isEmail()){
@@ -56,18 +60,45 @@ public class UserService {
             throw new WithdrawnUserException();
         }
 
-        return findUser;
+        return findUser.getNo();
     }
 
+    /**
+     * 사용자 탈퇴 요청 메서드
+     */
+    @Transactional
     public void withdraw(Long userNo){
         User user = userRepository.findByNo(userNo);
         user.withdraw();
     }
 
+    /**
+     * 사용자 상태 복구 메서드 
+     */
+    @Transactional
     public void recover(Long userNo){
         User user = userRepository.findByNo(userNo);
         user.verify();
     }
 
+    /**
+     * 프로필 설정 메서드
+     */
+    @Transactional
+    public void saveUserProfile(Long userNo, UserProfileSettupParam param, Image image){
+        User user = userRepository.findByNo(userNo);
+
+        user.setupUserProfile(param.getNickname(),
+                              param.getLineMessage(),
+                              image);
+
+    }
+
+    /**
+     * 프로필 조회 메서드
+     */
+    public User findUserWithProfile(Long userNo){
+        return userRepository.findWithProfileByNo(userNo).orElseThrow(UserNotFoundException::new);
+    }
 
 }

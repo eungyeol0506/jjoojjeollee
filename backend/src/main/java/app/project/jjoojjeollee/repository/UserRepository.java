@@ -40,8 +40,12 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public Optional<User> findByUserWithProfile(Long userNo){
-       return em.createQuery("SELECT u FROM User u JOIN FETCH u.profile WHERE u.no = :userNo", User.class)
+    public Optional<User> findWithProfileByNo(Long userNo){
+       return em.createQuery(
+               "SELECT u FROM User u " +
+                       "JOIN FETCH u.profile p " +
+                       "LEFT JOIN FETCH p.profileImage " +
+                       "WHERE u.no = :userNo", User.class)
                     .setParameter("userNo",userNo)
                     .getResultStream()
                     .findFirst();
