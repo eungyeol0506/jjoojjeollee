@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.global;
 
 import app.project.jjoojjeollee.global.helper.FilePathHelper;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,7 @@ public class LocalFileStorageService implements FileStorageService {
 
             file.transferTo(fullPath.toFile());
 
-            return relativePathName;
+            return fullPath.toString();
 
         }catch(IOException e) {
             throw new IllegalStateException("파일 저장 실패");
