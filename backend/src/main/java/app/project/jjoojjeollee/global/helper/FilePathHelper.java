@@ -1,6 +1,6 @@
 package app.project.jjoojjeollee.global.helper;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.UUID;
 
 /**
  * 파일 경로 생성 전담 클래스
@@ -10,10 +10,10 @@ public class FilePathHelper {
     public static String generateProfileName(Long userNo, String originalFileName) {
         return String.format("profiles/%d_profile.%s", userNo, getExtension(originalFileName));
     }
-    public static String generateDiaryName(Long diaryNo, String originalFileName) {
-        return String.format("diaries/%d_profile.%s", diaryNo, getExtension(originalFileName));
+    public static String generateDiaryName(Long diaryEntryNo, String originalFileName) {
+        String uuid = UUID.randomUUID().toString();
+        return String.format("diaries/%d/%s.%s", diaryEntryNo, uuid, getExtension(originalFileName));
     };
-
     // 확장자만 추출
     public static String getExtension(String originalFileName) {
         int idx = originalFileName.lastIndexOf(".");
