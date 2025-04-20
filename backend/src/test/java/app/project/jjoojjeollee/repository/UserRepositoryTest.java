@@ -39,4 +39,35 @@ class UserRepositoryTest {
 
         Assertions.assertThat(findUser).isPresent();
     }
+
+    @DisplayName("유저프로필 생성 후 조회")
+    @Test
+    public void settupProfile() throws Exception{
+        //given
+        User user = User.createUser("testId", "testPw", "test@test.com");
+        user.setupUserProfile("테스트", null, null);
+        userRepository.save(user);
+        
+        //when
+        Optional<User> findUser = userRepository.findWithProfileByNo(user.getNo());
+        
+        //then
+        assertNotNull(findUser, "save한 유저를 찾아옴");
+        assertNotNull(findUser.get().getProfile(), "프로필 객체 있음");
+        assertNull(findUser.get().getProfile().getProfileImage(), "근데 이미지는 널값임");
+    }
+    
+    @DisplayName("유저프로필 생성되지 않으면 프로필 조회 불가능")
+    @Test
+    public void failedFindWithProfile() throws Exception{
+        //given
+        User user = User.createUser("testId", "testPw", "test@test.com");
+        userRepository.save(user);
+
+        //when
+        Optional<User> findUser = userRepository.findWithProfileByNo(user.getNo());
+
+        //then
+        assertTrue(findUser.isEmpty(), "유저값이 persist되어도 프로필이 없어서 찾아오지 못함");
+    }
 }
