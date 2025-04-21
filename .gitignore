@@ -5,3 +5,6 @@
 /backend/build/
 /backend/out/
 /backend/src/main/resources/application.yaml
+
+/.vscode/
+.vscode/settings.json

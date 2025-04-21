@@ -2,6 +2,7 @@ package app.project.jjoojjeollee.service;
 
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
+import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
 import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import app.project.jjoojjeollee.repository.UserRepository;
 import app.project.jjoojjeollee.service.user.PasswordMismatchException;
@@ -42,7 +43,7 @@ class UserServiceTest {
     }
     
     @Nested
-    class login{
+    class Login{
         @Test
         @DisplayName("로그인 성공")
         public void loginByEmail() throws Exception{
@@ -52,8 +53,8 @@ class UserServiceTest {
             UserLoginParam userLoginParamId = new UserLoginParam("test", "password");
             UserLoginParam userLoginParamEmail = new UserLoginParam("test@test.com", "password");
             //when
-            User result1 = userService.login(userLoginParamId);
-            User result2 = userService.login(userLoginParamEmail);
+            Long result1 = userService.login(userLoginParamId);
+            Long result2 = userService.login(userLoginParamEmail);
             //then
             Assertions.assertThat(result1).isNotNull();
             Assertions.assertThat(result2).isNotNull();
@@ -98,6 +99,26 @@ class UserServiceTest {
             Throwable exception = Assertions.catchException(() -> userService.login(userLoginParam));
             //then
             Assertions.assertThat(exception).isInstanceOf(RecoverableUserException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("프로필 저장&조회 테스트")
+    class SaveProfile{
+        @DisplayName("프로필 저장 성공 후 조회")
+        @Test
+        public void successSettupUserProfile() throws Exception{
+            //given
+            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            UserProfileSettupParam param = new UserProfileSettupParam("nickname", null);
+
+            //when
+            userService.saveUserProfile(userNo, param, null);
+
+            //then
+            User user = userService.findUserWithProfile(userNo);
+
+            Assertions.assertThat(user.getProfile()).isNotNull();
         }
     }
 }

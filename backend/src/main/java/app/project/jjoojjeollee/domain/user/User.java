@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Entity
-@Getter @Setter(AccessLevel.PROTECTED)
+@Getter @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="users", uniqueConstraints = {
         @UniqueConstraint(name="uk_users_email", columnNames = {"email"}),
@@ -59,7 +59,8 @@ public class User {
         user.setPw(pw);
         user.setEmail(email);
         user.setCreatedAt(LocalDateTime.now());
-
+        // 생성 시 기본값은 N
+        user.setEmailVerified("N");
         return user;
     }
 
@@ -111,9 +112,13 @@ public class User {
     /**
      * 프로필 설정 메서드
      */
-    public void setupUser(String nickname, String lineMessage, Image image){
-        this.profile = UserProfile.createUserProfile(nickname, lineMessage, image);
-//        this.profile = userProfile;
+    public void setupUserProfile(String nickname, String lineMessage, Image image){
+        if(this.profile == null){
+            this.profile = UserProfile.createUserProfile(nickname, lineMessage, image);
+            return;
+        }
+        // 프로필 값이 있는 경우
+        this.profile.updateUserProfile(nickname, lineMessage, image);
     }
 
 

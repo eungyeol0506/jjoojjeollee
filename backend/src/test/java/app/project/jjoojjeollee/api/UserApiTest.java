@@ -109,8 +109,7 @@ class UserApiTest {
                             .content(objectMapper.writeValueAsString(loginParam)))
                     .andDo(print())
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.success").value(true))
-                    .andExpect(jsonPath("$.data.user").exists());
+                    .andExpect(jsonPath("$.success").value(true));
         }
 
         @DisplayName("로그인 실패 - 존재하지 않는 사용자")
@@ -205,5 +204,6 @@ class UserApiTest {
         }
         // jwt 토큰 발급 실패 케이스
     }
+
 
 }
