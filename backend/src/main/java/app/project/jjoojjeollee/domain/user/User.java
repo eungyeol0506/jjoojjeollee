@@ -47,7 +47,7 @@ public class User {
     @Column(name="locked_at")
     private LocalDateTime lockedAt;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserProfile profile;
 
     /**
