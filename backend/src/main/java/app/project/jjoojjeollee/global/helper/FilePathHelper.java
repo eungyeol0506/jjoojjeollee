@@ -24,12 +24,18 @@ public class FilePathHelper {
     }
 
     // 파일 명만 추출
-    public static String getFileName(String fullFilePathName){
+    public static String getFileNameOlny(String fullFilePathName){
         if (fullFilePathName == null || fullFilePathName.isEmpty()) {
             return "";
         }
-        int idx = fullFilePathName.lastIndexOf('/');
-        return idx != -1 ? fullFilePathName.substring(idx + 1) : fullFilePathName;
+        // 1. 마지막 / 뒤 파일명 추출
+        fullFilePathName = fullFilePathName.replace("\\", "/"); // 윈도우 호환
+        int lastSlashIdx = fullFilePathName.lastIndexOf('/');
+        String fileName = (lastSlashIdx != -1) ? fullFilePathName.substring(lastSlashIdx + 1) : fullFilePathName;
+
+        // 2. 파일명에서 확장자 제거
+        int dotIdx = fileName.lastIndexOf('.');
+        return (dotIdx != -1) ? fileName.substring(0, dotIdx) : fileName;
     }
 
     // 디렉터리 경로만 추출 (상대경로)

@@ -1,5 +1,6 @@
 package app.project.jjoojjeollee.service;
 
+import app.project.jjoojjeollee.domain.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
 import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -103,22 +106,64 @@ class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("프로필 저장&조회 테스트")
-    class SaveProfile{
-        @DisplayName("프로필 저장 성공 후 조회")
+    @DisplayName("프로필 관리 테스트")
+    class manageProfile{
+        @DisplayName("프로필 저장 성공 후 조회 (이미지 수정 있음)")
         @Test
-        public void successSettupUserProfile() throws Exception{
+        public void successSetupUserProfileWithNew() throws Exception{
             //given
             Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
-            UserProfileSettupParam param = new UserProfileSettupParam("nickname", null);
+            UserProfileSettupParam param = new UserProfileSettupParam("nickname", "");
+            Image image = Image.createImage("filename", "savedName", "path", "png");
 
             //when
-            userService.saveUserProfile(userNo, param, null);
+            userService.saveUserProfile(userNo, param, image);
 
             //then
             User user = userService.findUserWithProfile(userNo);
+            assertNotNull(user.getProfile().getProfileImage(), "이미지가 설정됨");
+            assertEquals("nickname", user.getProfile().getNickname(), "별명이 설정됨");
+            assertNull(user.getProfile().getLineMessage(), "공백 메시지는 null임");
+        }
 
-            Assertions.assertThat(user.getProfile()).isNotNull();
+        @Test
+        @DisplayName("이미지 수정없이 닉네임/메시지만 수정하는 경우")
+        public void successSetupUserProfile() throws Exception{
+            //given
+            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            UserProfileSettupParam param = new UserProfileSettupParam("nickname", "");
+            Image image = Image.createImage("filename", "savedName", "path", "png");
+            userService.saveUserProfile(userNo, param, image);
+
+            UserProfileSettupParam newParam = new UserProfileSettupParam("new nickname", "new message");
+            //when
+            userService.saveUserProfile(userNo, newParam, null);
+
+            //then
+            User user = userService.findUserWithProfile(userNo);
+            assertNotNull(user.getProfile().getProfileImage(), "이미지값 유지됨");
+            assertEquals("new nickname", user.getProfile().getNickname(), "별명이 설정됨");
+            assertEquals("new message", user.getProfile().getLineMessage(), "별명이 설정됨");
+        }
+        
+        @Test
+        public void successRemoveUserProfile() throws Exception{
+            //given
+            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            Image image = Image.createImage("filename", "savedName", "path", "png");
+            userService.saveUserProfile(userNo, new UserProfileSettupParam("nickname", "new message"), image);
+
+            //when
+            String path = userService.removeUserProfileImage(userNo);
+
+            //then
+            User user = userService.findUserWithProfile(userNo);
+            assertEquals(image.getRelativePath(), path, "삭제된 이미지와 삭제할 경로가 똑같음");
+            assertNotNull(user.getProfile(), "프로필은 삭제되지 않음");
+            assertNull(user.getProfile().getProfileImage(), "이미지 값이 null");
+            assertEquals("nickname", user.getProfile().getNickname(), "별명이 설정됨");
+            assertEquals("new message", user.getProfile().getLineMessage(), "한줄메시지가 설정됨");
+
         }
     }
 }

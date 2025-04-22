@@ -9,7 +9,6 @@ import app.project.jjoojjeollee.global.helper.FilePathHelper;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
 import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
 import app.project.jjoojjeollee.param.user.UserRegisterParam;
-import app.project.jjoojjeollee.repository.UserRepository;
 import app.project.jjoojjeollee.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -33,8 +32,10 @@ public class UserApi {
     public ResponseEntity createUser(@Valid @RequestBody UserRegisterParam param) {
         Long userNo = userService.join(param);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("userNo", userNo);
         return ResponseEntity.status(201)
-                .body(ApiResponse.success(userNo));
+                .body(ApiResponse.success(data));
     }
 
     @PostMapping("login")
@@ -78,10 +79,11 @@ public class UserApi {
         return ResponseEntity.ok(ApiResponse.success(data));
     }
 
-    @PostMapping("settup")
+    @PostMapping(value = "settup")
     public ResponseEntity setupUserProfile(
-            @RequestPart(required = false) MultipartFile file,
-            @RequestPart @Valid UserProfileSettupParam param,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @RequestPart(value = "userProfileParam") @Valid UserProfileSettupParam param,
+            @RequestPart boolean isRemovedImage,
             HttpSession session) {
 
             Long userNo = (long) session.getAttribute("user");
@@ -90,13 +92,17 @@ public class UserApi {
 
             if(file != null && !file.isEmpty()) {
                 String relativePathName = fileService.save(file, FileImageType.PROFILE, userNo);
-                String storedFileName = FilePathHelper.getFileName(relativePathName);
+                String storedFileName = FilePathHelper.getFileNameOlny(relativePathName);
                 String storedFilePath = FilePathHelper.getDirectoryPath(relativePathName);
                 String extension = FilePathHelper.getExtension(relativePathName);
 
                 image = Image.createImage(file.getOriginalFilename(), storedFileName, storedFilePath, extension);
-
             }
+            if(isRemovedImage){
+                String relativeFileName = userService.removeUserProfileImage(userNo);
+                fileService.delete(relativeFileName);
+            }
+
             userService.saveUserProfile(userNo, param, image);
 
             return ResponseEntity.ok(ApiResponse.success("settup OK"));

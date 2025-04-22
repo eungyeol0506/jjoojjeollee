@@ -86,7 +86,7 @@ public class UserService {
      */
     @Transactional
     public void saveUserProfile(Long userNo, UserProfileSettupParam param, Image image){
-        User user = userRepository.findByNo(userNo);
+        User user = userRepository.findWithProfileByNo(userNo).orElse(userRepository.findByNo(userNo));
 
         user.setupUserProfile(param.getNickname(),
                               param.getLineMessage(),
@@ -101,4 +101,14 @@ public class UserService {
         return userRepository.findWithProfileByNo(userNo).orElseThrow(UserNotFoundException::new);
     }
 
+    /**
+     * 프로필 이미지 삭제 메서드
+     */
+    public String removeUserProfileImage(Long userNo){
+        User user = userRepository.findWithProfileByNo(userNo).orElseThrow(UserNotFoundException::new);
+        String relativeFileName = user.getProfile().getProfileImage().getRelativePath();
+        user.getProfile().removeUserProfileImage();
+
+        return relativeFileName;
+    }
 }
