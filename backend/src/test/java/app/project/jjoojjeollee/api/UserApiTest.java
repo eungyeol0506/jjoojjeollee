@@ -1,9 +1,12 @@
 package app.project.jjoojjeollee.api;
 
+import app.project.jjoojjeollee.global.ApiResponse;
 import app.project.jjoojjeollee.param.user.UserLoginParam;
+import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
 import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,9 +15,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -205,5 +212,120 @@ class UserApiTest {
         // jwt 토큰 발급 실패 케이스
     }
 
+    @Nested
+    @DisplayName("프로필 설정 테스트")
+    class SetProfile{
+        @Test
+        @DisplayName("이미지를 수정에 성공하는 경우")
+        public void successSetupProfile() throws Exception{
+            // given
+            long userNo = createTestUser();
+
+            MockMultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test".getBytes());
+            MockMultipartFile isRemovedImage = new MockMultipartFile("isRemovedImage", "", "application/json", objectMapper.writeValueAsBytes(false));
+            MockMultipartFile userProfileParam = new MockMultipartFile("userProfileParam", "", "application/json", objectMapper.writeValueAsBytes(new UserProfileSettupParam("test", "HI")));
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("user", userNo);
+
+            //when //then
+            mockMvc.perform(multipart("/api/users/settup")
+                            .file(file)
+                            .file(userProfileParam)
+                            .file(isRemovedImage)
+                            .session(session))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @DisplayName("이미지 수정 없이 프로필 수정에 성공하는 경우")
+        public void successSetupProfileWithNoImage() throws Exception{
+            // given
+            long userNo = createTestUser();
+
+            MockMultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test".getBytes());
+            MockMultipartFile isRemovedImage = new MockMultipartFile("isRemovedImage", "", "application/json", objectMapper.writeValueAsBytes(false));
+            MockMultipartFile userProfileParam = new MockMultipartFile("userProfileParam", "", "application/json", objectMapper.writeValueAsBytes(new UserProfileSettupParam("test", "HI")));
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("user", userNo);
+
+            mockMvc.perform(multipart("/api/users/settup")
+                            .file(file)
+                            .file(userProfileParam)
+                            .file(isRemovedImage)
+                            .session(session))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+
+            MockMultipartFile newUserProfileParam = new MockMultipartFile("userProfileParam", "", "application/json", objectMapper.writeValueAsBytes(new UserProfileSettupParam("new_test", "HI")));
+            //when //then
+            mockMvc.perform(multipart("/api/users/settup")
+                            .file(newUserProfileParam)
+                            .file(isRemovedImage)
+                            .session(session))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @DisplayName("프로필 설정 시 이미지를 삭제하는 경우")
+        public void successSetupProfileWithDeleteImage() throws Exception{
+// given
+            long userNo = createTestUser();
+
+            MockMultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test".getBytes());
+            MockMultipartFile isRemovedImage = new MockMultipartFile("isRemovedImage", "", "application/json", objectMapper.writeValueAsBytes(false));
+            MockMultipartFile userProfileParam = new MockMultipartFile("userProfileParam", "", "application/json", objectMapper.writeValueAsBytes(new UserProfileSettupParam("test", "HI")));
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("user", userNo);
+
+            mockMvc.perform(multipart("/api/users/settup")
+                            .file(file)
+                            .file(userProfileParam)
+                            .file(isRemovedImage)
+                            .session(session))
+                    .andExpect(status().isOk());
+
+            MockMultipartFile newUserProfileParam = new MockMultipartFile("userProfileParam", "", "application/json", objectMapper.writeValueAsBytes(new UserProfileSettupParam("new_test", "HI")));
+            MockMultipartFile newIsRemovedImage = new MockMultipartFile("isRemovedImage", "", "application/json", objectMapper.writeValueAsBytes(true));
+
+            //when //then
+            mockMvc.perform(multipart("/api/users/settup")
+                            .file(newUserProfileParam)
+                            .file(newIsRemovedImage)
+                            .session(session))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        }
+        
+        @DisplayName("예외 발생 시 DB rollback 테스트")
+        @Test
+        public void failedCauseException() throws Exception{
+            //given
+
+            //when
+            //then
+        }
+
+        private long createTestUser() throws Exception {
+            // user 회원가입 set
+            UserRegisterParam registerParam = new UserRegisterParam("test", "password", "test@test.com");
+            MvcResult result = mockMvc.perform(post("/api/users/signup")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(registerParam)))
+                    .andExpect(status().isCreated())
+                    .andReturn();
+
+            String StringResponse = result.getResponse().getContentAsString();
+            ApiResponse apiResponse = objectMapper.readValue(StringResponse, ApiResponse.class);
+            Map<String, Object> data = (Map<String, Object>) apiResponse.getData();
+            Integer userNo = (Integer) data.get("userNo");
+            long userNoLong = userNo.longValue();
+            return userNoLong;
+        }
+    }
 
 }

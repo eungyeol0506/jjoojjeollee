@@ -28,7 +28,7 @@ public class UserProfile {
     @Column(name = "line_message", length = 80)
     private String lineMessage;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_no")
     private Image profileImage;
 
@@ -53,7 +53,17 @@ public class UserProfile {
     public void updateUserProfile(String nickname, String lineMessage, Image profileImage) {
         this.nickname = nickname;
         this.lineMessage = StringUtils.hasText(lineMessage) ? lineMessage : null;
-        this.profileImage = profileImage;
+        // null 인 경우 파일을 변경하는 경우가 아니므로
+        if(profileImage != null){
+            this.profileImage = profileImage;
+        }
+    }
+
+    /**
+     * 프로필 이미지 삭제 메서드
+     */
+    public void removeUserProfileImage() {
+        this.profileImage = null;
     }
 
 }

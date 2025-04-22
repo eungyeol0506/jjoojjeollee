@@ -47,6 +47,6 @@ public class Image {
      */
     @Transient
     public String getRelativePath() {
-        return storedFilePath + "/" + originalFileName + "." + extension;
+        return storedFilePath + "/" + storedFileName + "." + extension;
     }
 }
