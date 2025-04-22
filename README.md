@@ -17,10 +17,13 @@
 프로젝트를 통해 `CI/CD 자동화`, `RESTful web API 환경`, `도메인-모델 패턴`, `git기반 협업` 역량 강화를 중점으로 아카이빙을 기반으로 프로젝트 전반의 `기획`부터 `배포`까지 모두 경험하는 것을 목표로 합니다. 
 
 #### 관련 문서
-> wiki 작성 중
+> [프로젝트 기획서](https://github.com/eungyeol0506/jjoojjeollee/wiki/project%E2%80%90overview)
+> [UI/UX 설계](https://github.com/eungyeol0506/jjoojjeollee/wiki/UI-UX)
+> [API 문서](https://github.com/eungyeol0506/jjoojjeollee/wiki/ApiSpec)
+> [ERD 문서(도메인)](https://github.com/eungyeol0506/jjoojjeollee/wiki/ERD)
 
 ## Technology Stack
-> 자세한 내용은 [기술 스택 문서]에서 확인할 수 있습니다.
+> 자세한 내용은 [기술 스택 문서](https://github.com/eungyeol0506/jjoojjeollee/wiki/%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)에서 확인할 수 있습니다.
 
 #### Frontend
 <div align=""> 
@@ -59,7 +62,7 @@
 
 > 이미지 추가 예정
 
-**배포 자동화**
+**배포 자동화 시 추가될 내용**
 
 ## Deployment Setup
 #### [1] Clone the Repository
