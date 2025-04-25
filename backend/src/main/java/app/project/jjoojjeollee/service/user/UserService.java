@@ -3,9 +3,9 @@ package app.project.jjoojjeollee.service.user;
 import app.project.jjoojjeollee.domain.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.domain.user.UserStatus;
-import app.project.jjoojjeollee.param.user.UserLoginParam;
-import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
-import app.project.jjoojjeollee.param.user.UserRegisterParam;
+import app.project.jjoojjeollee.dto.user.UserLoginParam;
+import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;
+import app.project.jjoojjeollee.dto.user.UserRegisterParam;
 import app.project.jjoojjeollee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,7 +68,7 @@ public class UserService {
      */
     @Transactional
     public void withdraw(Long userNo){
-        User user = userRepository.findByNo(userNo);
+        User user = userRepository.findByNo(userNo).orElseThrow(UserNotFoundException::new);
         user.withdraw();
     }
 
@@ -77,7 +77,7 @@ public class UserService {
      */
     @Transactional
     public void recover(Long userNo){
-        User user = userRepository.findByNo(userNo);
+        User user = userRepository.findByNo(userNo).orElseThrow(UserNotFoundException::new);
         user.verify();
     }
 
@@ -86,7 +86,9 @@ public class UserService {
      */
     @Transactional
     public void saveUserProfile(Long userNo, UserProfileSettupParam param, Image image){
-        User user = userRepository.findWithProfileByNo(userNo).orElse(userRepository.findByNo(userNo));
+        User user = userRepository.findWithProfileByNo(userNo)
+                                .orElse(userRepository.findByNo(userNo)
+                                                    .orElseThrow(UserNotFoundException::new));
 
         user.setupUserProfile(param.getNickname(),
                               param.getLineMessage(),

@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.param.user;
+package app.project.jjoojjeollee.dto.user;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

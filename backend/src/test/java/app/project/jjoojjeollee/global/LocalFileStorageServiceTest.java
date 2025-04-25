@@ -1,13 +1,10 @@
 package app.project.jjoojjeollee.global;
 
-import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.service.LocalFileStorageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class LocalFileStorageServiceTest {
 
-    @Autowired LocalFileStorageService fileStorageService;
+    @Autowired
+    LocalFileStorageService fileStorageService;
 
     @DisplayName("프로필 저장 테스트")
     @Test

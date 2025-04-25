@@ -1,15 +1,11 @@
-package app.project.jjoojjeollee.service;
+package app.project.jjoojjeollee.service.user;
 
 import app.project.jjoojjeollee.domain.Image;
 import app.project.jjoojjeollee.domain.user.User;
-import app.project.jjoojjeollee.param.user.UserLoginParam;
-import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
-import app.project.jjoojjeollee.param.user.UserRegisterParam;
+import app.project.jjoojjeollee.dto.user.UserLoginParam;
+import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;
+import app.project.jjoojjeollee.dto.user.UserRegisterParam;
 import app.project.jjoojjeollee.repository.UserRepository;
-import app.project.jjoojjeollee.service.user.PasswordMismatchException;
-import app.project.jjoojjeollee.service.user.RecoverableUserException;
-import app.project.jjoojjeollee.service.user.UserNotFoundException;
-import app.project.jjoojjeollee.service.user.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -39,7 +35,7 @@ class UserServiceTest {
         Long userNo = userService.join(userRegisterParam);
 
         //then
-        User user = userRepository.findByNo(userNo);
+        User user = userRepository.findByNo(userNo).get();
         Assertions.assertThat(user).isNotNull();
         Assertions.assertThat(user.getId()).isEqualTo(userRegisterParam.getId());
         Assertions.assertThat(passwordEncoder.matches(userRegisterParam.getPw(), user.getPw())).isTrue();

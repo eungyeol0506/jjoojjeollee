@@ -1,7 +1,8 @@
-package app.project.jjoojjeollee.global;
+package app.project.jjoojjeollee.service;
 
+import app.project.jjoojjeollee.global.FileImageType;
+import app.project.jjoojjeollee.global.FileStorageService;
 import app.project.jjoojjeollee.global.helper.FilePathHelper;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

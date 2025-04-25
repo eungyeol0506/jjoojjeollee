@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.domain.user.UserProfile;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,8 +24,12 @@ public class UserRepository {
         return user.getNo();
     }
 
-    public User findByNo(Long no){
-        return em.find(User.class, no);
+    public void saveProfile(UserProfile userProfile) {
+        em.persist(userProfile);
+    }
+
+    public Optional<User> findByNo(Long no){
+        return Optional.ofNullable(em.find(User.class, no));
     }
 
     public Optional<User> findById(String id){

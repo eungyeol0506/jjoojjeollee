@@ -32,7 +32,7 @@ public class UserProfile {
     @JoinColumn(name = "image_no")
     private Image profileImage;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_no")
     private User user;
 
