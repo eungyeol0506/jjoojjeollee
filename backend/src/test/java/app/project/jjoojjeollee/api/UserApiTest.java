@@ -1,12 +1,11 @@
 package app.project.jjoojjeollee.api;
 
+import app.project.jjoojjeollee.dto.user.UserLoginParam;
+import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;
+import app.project.jjoojjeollee.dto.user.UserRegisterParam;
 import app.project.jjoojjeollee.global.ApiResponse;
-import app.project.jjoojjeollee.param.user.UserLoginParam;
-import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
-import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,14 +18,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
