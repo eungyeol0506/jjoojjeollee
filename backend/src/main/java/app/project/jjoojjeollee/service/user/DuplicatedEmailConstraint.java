@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.param.user;
+package app.project.jjoojjeollee.service.user;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -6,10 +6,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Constraint(validatedBy = {DuplicatedIdValidator.class})
+@Constraint(validatedBy = {DuplicatedEmailValidator.class})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DuplicatedIdConstraint {
-    String message() default "중복된 아이디";
+public @interface DuplicatedEmailConstraint {
+    String message() default "중복된 이메일";
 
     Class<?>[] groups() default {};
 

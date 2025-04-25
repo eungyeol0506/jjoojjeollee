@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.param.user;
+package app.project.jjoojjeollee.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.param.user;
+package app.project.jjoojjeollee.service.user;
 
 import app.project.jjoojjeollee.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;

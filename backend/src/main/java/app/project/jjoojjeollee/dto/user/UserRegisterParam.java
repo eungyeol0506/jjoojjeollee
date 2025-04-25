@@ -1,5 +1,7 @@
-package app.project.jjoojjeollee.param.user;
+package app.project.jjoojjeollee.dto.user;
 
+import app.project.jjoojjeollee.service.user.DuplicatedEmailConstraint;
+import app.project.jjoojjeollee.service.user.DuplicatedIdConstraint;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
