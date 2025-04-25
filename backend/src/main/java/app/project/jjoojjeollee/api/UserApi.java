@@ -2,13 +2,14 @@ package app.project.jjoojjeollee.api;
 
 import app.project.jjoojjeollee.domain.Image;
 import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.dto.user.UserLoginParam;
+import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;
+import app.project.jjoojjeollee.dto.user.UserRegisterParam;
 import app.project.jjoojjeollee.global.ApiResponse;
 import app.project.jjoojjeollee.global.FileImageType;
-import app.project.jjoojjeollee.global.LocalFileStorageService;
+import app.project.jjoojjeollee.service.JwtService;
+import app.project.jjoojjeollee.service.LocalFileStorageService;
 import app.project.jjoojjeollee.global.helper.FilePathHelper;
-import app.project.jjoojjeollee.param.user.UserLoginParam;
-import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
-import app.project.jjoojjeollee.param.user.UserRegisterParam;
 import app.project.jjoojjeollee.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -27,6 +28,7 @@ public class UserApi {
 
     private final UserService userService;
     private final LocalFileStorageService fileService;
+    private final JwtService jwtService;
 
     @PostMapping("/signup")
     public ResponseEntity createUser(@Valid @RequestBody UserRegisterParam param) {
@@ -48,7 +50,7 @@ public class UserApi {
         Map<String, Object> data = new HashMap<>();
         data.put("redirectUrl", "home");
         // jwt 토큰 발급 과정으로 변경 필요
-        data.put("token", userNo);
+        data.put("token", jwtService.toToken(userNo));
 
         return ResponseEntity.ok(ApiResponse.success(data));
     }

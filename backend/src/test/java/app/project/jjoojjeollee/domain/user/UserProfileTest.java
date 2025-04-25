@@ -1,7 +1,6 @@
 package app.project.jjoojjeollee.domain.user;
 
 import app.project.jjoojjeollee.domain.Image;
-import app.project.jjoojjeollee.param.user.UserProfileSettupParam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
