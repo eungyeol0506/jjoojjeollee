@@ -25,7 +25,7 @@ class JwtServiceTest {
         Long userNo = userRepository.save(user);
 
         //when
-        String token = jwtService.toToken(user);
+        String token = jwtService.toToken(userNo);
         Long subject = jwtService.getSubFromToken(token).orElse(0L);
 
         //then
@@ -41,11 +41,11 @@ class JwtServiceTest {
         User user = User.createUser("id","pw", "email");
         Long userNo = userRepository.save(user);
         User user2 = User.createUser("id2","pw2", "email2");
-        userRepository.save(user2);
+        Long userNo2 = userRepository.save(user2);
 
-        String token = jwtService.toToken(user);
+        String token = jwtService.toToken(userNo);
         String invalidToken = "abc.def.ght"; // 엉터리 토큰
-        String invalidToken2 = jwtService.toToken(user2); //완전 다른 토큰
+        String invalidToken2 = jwtService.toToken(userNo2); //완전 다른 토큰
         //when
         Long subject = jwtService.getSubFromToken(token).orElse(0L);
         Long subject2 = jwtService.getSubFromToken(invalidToken).orElse(0L);

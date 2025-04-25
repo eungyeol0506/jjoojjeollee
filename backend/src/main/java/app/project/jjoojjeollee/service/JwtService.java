@@ -27,9 +27,9 @@ public class JwtService {
         this.secretKey = new SecretKeySpec(secretKey.getBytes(), signatureAlgorithm.getJcaName());
     }
 
-    public String toToken(User user){
+    public String toToken(Long userNo){
         return Jwts.builder()
-                .setSubject(String.valueOf(user.getNo()))
+                .setSubject(String.valueOf(userNo))
                 .setExpiration(expireTimeFromNow())
                 .signWith(secretKey)
                 .compact();
