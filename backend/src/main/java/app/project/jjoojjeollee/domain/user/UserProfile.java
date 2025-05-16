@@ -32,18 +32,19 @@ public class UserProfile {
     @JoinColumn(name = "image_no")
     private Image profileImage;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no")
     private User user;
 
     /**
      * 프로필 생성 메서드
      */
-    public static UserProfile createUserProfile(String nickname, String lineMessage, Image profileImage) {
+    public static UserProfile createUserProfile(String nickname, String lineMessage, Image profileImage, User user) {
         UserProfile userProfile = new UserProfile();
         userProfile.setNickname(nickname);
         userProfile.setLineMessage(StringUtils.hasText(lineMessage) ? lineMessage : null);
         userProfile.setProfileImage(profileImage);
+        userProfile.setUser(user);
         return userProfile;
     }
 

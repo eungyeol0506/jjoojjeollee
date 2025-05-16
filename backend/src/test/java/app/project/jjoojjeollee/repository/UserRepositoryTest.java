@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.service.JwtService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +15,13 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
+@Import({UserRepository.class})
+//@Transactional
 class UserRepositoryTest {
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     @DisplayName("사용자 저장 및 조회")

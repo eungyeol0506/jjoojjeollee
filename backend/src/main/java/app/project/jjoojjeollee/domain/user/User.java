@@ -47,7 +47,7 @@ public class User {
     @Column(name="locked_at")
     private LocalDateTime lockedAt;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserProfile profile;
 
     /**
@@ -113,8 +113,9 @@ public class User {
      * 프로필 설정 메서드
      */
     public void setupUserProfile(String nickname, String lineMessage, Image image){
+
         if(this.profile == null){
-            this.profile = UserProfile.createUserProfile(nickname, lineMessage, image);
+            this.profile = UserProfile.createUserProfile(nickname, lineMessage, image, this);
             return;
         }
         // 프로필 값이 있는 경우

@@ -21,10 +21,13 @@ public class UserRepository {
         else{
             em.merge(user);
         }
+//        saveProfile(user.getProfile());
+
         return user.getNo();
     }
 
     public void saveProfile(UserProfile userProfile) {
+
         em.persist(userProfile);
     }
 
