@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.service.JwtService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@Transactional
+@ActiveProfiles("test")
+@DataJpaTest
+@Import({UserRepository.class})
 class UserRepositoryTest {
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     @DisplayName("사용자 저장 및 조회")
