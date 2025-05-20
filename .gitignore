@@ -1,4 +1,5 @@
 /gitignore/
+/uploads/
 
 /backend/.gradle/
 /backend/.idea/
