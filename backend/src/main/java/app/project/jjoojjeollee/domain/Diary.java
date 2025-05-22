@@ -32,6 +32,6 @@ public class Diary {
     @Column(name = "current_index", nullable = false)
     private int currentIndex;
 
-//    @OneToMany(mappedBy = "diary")
-//    private List<DiaryEntry> diaryEntries;
+    @OneToMany(mappedBy = "diary")
+    private List<DiaryEntry> diaryEntries;
 }
