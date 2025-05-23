@@ -23,6 +23,8 @@ public class Diary {
 
     @Column(name = "hex_color")
     private String hexColor;
+    @Column(name = "announcement")
+    private String announcement;
 
     @Embedded
     private DiaryPeriod period;
@@ -33,6 +35,6 @@ public class Diary {
     @Column(name = "current_index", nullable = false)
     private int currentIndex;
 
-    @OneToMany(mappedBy = "diary")
+    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
     private List<DiaryEntry> diaryEntries;
 }
