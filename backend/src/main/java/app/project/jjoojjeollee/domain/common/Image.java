@@ -1,6 +1,5 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.common;
 
-import app.project.jjoojjeollee.global.FileImageType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

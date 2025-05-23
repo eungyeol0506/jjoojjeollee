@@ -1,6 +1,6 @@
 package app.project.jjoojjeollee.domain.user;
 
-import app.project.jjoojjeollee.domain.Image;
+import app.project.jjoojjeollee.domain.common.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,5 +1,6 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
+import app.project.jjoojjeollee.domain.common.ModificationInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 

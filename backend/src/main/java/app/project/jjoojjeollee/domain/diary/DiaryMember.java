@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
 import app.project.jjoojjeollee.domain.user.User;
 import jakarta.persistence.*;
