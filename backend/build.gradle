@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+
 }
 
 group = 'app.project'
@@ -38,6 +39,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	// JOOQ
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 
 	compileOnly 'org.projectlombok:lombok'
 
