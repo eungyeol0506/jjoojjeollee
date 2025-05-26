@@ -12,8 +12,8 @@ public class Comment {
     @Column(name = "comment_no")
     private Long no;
 
-    @Column(name = "contents", nullable = false, length = 100)
-    private String contents;
+    @Column(name = "comment_text", nullable = false, length = 100)
+    private String commentText;
 
     @Embedded
     private ModificationInfo modificationInfo;
@@ -23,6 +23,6 @@ public class Comment {
     private DiaryEntry diaryEntry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_no")
+    @JoinColumn(name = "parent_no", referencedColumnName = "comment_no")
     private Comment parent;
 }
