@@ -21,6 +21,6 @@ public class DiaryMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no")
-    private User writer;
+    private User member;
 
 }
