@@ -16,9 +16,11 @@ public class DiaryEntry {
     @Column(name = "title", nullable = false)
     private String title;
 
-
     @Column(name = "contents", nullable = false)
     private String contents;
+
+    @Column(name = "writer_name")
+    private String writerName;
 
     @Embedded
     private ModificationInfo modificationInfo;
