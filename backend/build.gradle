@@ -95,7 +95,7 @@ tasks.named("compileJava") {
 sourceSets {
 	main {
 		java {
-			srcDir 'src/main/generated'
+			srcDirs += 'src/main/generated'
 		}
 	}
 }
