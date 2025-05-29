@@ -8,7 +8,7 @@ import lombok.Getter;
 @Table(name = "diary_members")
 @Getter
 public class DiaryMember {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_no")
     private Long no;
 

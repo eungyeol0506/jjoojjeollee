@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "diaries")
 @Getter
 public class Diary {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_no", updatable = false)
     private Long no;
 

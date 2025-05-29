@@ -9,7 +9,7 @@ import lombok.Getter;
 @Table(name = "diary_entries")
 @Getter
 public class DiaryEntry {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "entry_no", updatable = false)
     private Long no;
 

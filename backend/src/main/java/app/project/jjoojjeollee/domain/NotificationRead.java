@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "notification_read")
 @Getter
 public class NotificationRead {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "read_no")
     private Long no;
 

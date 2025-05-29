@@ -12,13 +12,8 @@ import org.springframework.util.StringUtils;
 @Getter @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_profiles")
-@SequenceGenerator( name = "userProfile_seq_generator",
-        sequenceName = "user_profiles_seq",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class UserProfile {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userProfile_seq_generator")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_no")
     private Long no;
 

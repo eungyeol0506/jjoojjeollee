@@ -17,13 +17,8 @@ import java.time.temporal.ChronoUnit;
         @UniqueConstraint(name="uk_users_email", columnNames = {"email"}),
         @UniqueConstraint(name="uk_users_id", columnNames = {"id"})
 })
-@SequenceGenerator( name = "user_seq_generator",
-                    sequenceName = "users_seq",
-                    initialValue = 1,
-                    allocationSize = 1
-                    )
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGenerator")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_no", updatable = false)
     private Long no;
 
@@ -44,6 +39,7 @@ public class User {
 
     @Column(name="withdrawn_at")
     private LocalDateTime withdrawnAt;
+
     @Column(name="locked_at")
     private LocalDateTime lockedAt;
 
