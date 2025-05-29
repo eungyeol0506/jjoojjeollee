@@ -75,7 +75,7 @@ jooq {
 
 			database {
 				name = 'org.jooq.meta.mysql.MySQLDatabase'
-//				inputSchema = 'jjoojjeollee'
+				inputSchema = 'jjoojjeollee'
 			}
 
 			generate {}
