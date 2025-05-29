@@ -22,7 +22,7 @@ public class NotificationRead {
     private Notification notification;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no", nullable = false)
+    @JoinColumn(name = "read_user_no", nullable = false)
     private User readBy;
 
 }

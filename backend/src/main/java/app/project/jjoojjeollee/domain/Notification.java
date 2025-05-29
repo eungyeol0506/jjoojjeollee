@@ -19,6 +19,6 @@ public class Notification {
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "target_user_no")
     private User target;
 }
