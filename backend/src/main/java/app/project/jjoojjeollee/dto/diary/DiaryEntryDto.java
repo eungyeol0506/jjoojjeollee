@@ -1,14 +1,16 @@
 package app.project.jjoojjeollee.dto.diary;
 
+import lombok.Getter;
 
+@Getter
 public class DiaryEntryDto {
 
-    private Long no;
+    private Long entryNo;
     private String title;
     private String contents;
 
-    private Long profileNo;
-    private String nickname;
+    private String writerName;
+    private Long createdBy;
 
     private Long imageNo;
     private String storedFilePath;
