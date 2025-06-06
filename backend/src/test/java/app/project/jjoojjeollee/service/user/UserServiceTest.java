@@ -1,6 +1,6 @@
 package app.project.jjoojjeollee.service.user;
 
-import app.project.jjoojjeollee.domain.Image;
+import app.project.jjoojjeollee.domain.common.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.dto.user.UserLoginParam;
 import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;
@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 class UserServiceTest {

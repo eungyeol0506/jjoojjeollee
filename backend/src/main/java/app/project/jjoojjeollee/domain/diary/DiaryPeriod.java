@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

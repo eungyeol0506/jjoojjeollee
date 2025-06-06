@@ -1,6 +1,6 @@
 package app.project.jjoojjeollee.service.user;
 
-import app.project.jjoojjeollee.domain.Image;
+import app.project.jjoojjeollee.domain.common.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.domain.user.UserStatus;
 import app.project.jjoojjeollee.dto.user.UserLoginParam;

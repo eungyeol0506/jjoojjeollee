@@ -8,7 +8,7 @@ import lombok.Getter;
 @Table(name = "notifications")
 @Getter
 public class Notification {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_no")
     private Long no;
 
@@ -19,6 +19,6 @@ public class Notification {
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "target_user_no")
     private User target;
 }

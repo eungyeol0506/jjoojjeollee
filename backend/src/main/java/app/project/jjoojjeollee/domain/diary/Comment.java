@@ -1,5 +1,6 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
+import app.project.jjoojjeollee.domain.common.ModificationInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -7,12 +8,12 @@ import lombok.Getter;
 @Table(name = "comments")
 @Getter
 public class Comment {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_no")
     private Long no;
 
-    @Column(name = "contents", nullable = false, length = 100)
-    private String contents;
+    @Column(name = "comment_text", nullable = false, length = 100)
+    private String commentText;
 
     @Embedded
     private ModificationInfo modificationInfo;
@@ -22,6 +23,6 @@ public class Comment {
     private DiaryEntry diaryEntry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_no")
+    @JoinColumn(name = "parent_no", referencedColumnName = "comment_no")
     private Comment parent;
 }

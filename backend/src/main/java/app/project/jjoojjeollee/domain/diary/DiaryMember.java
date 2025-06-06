@@ -1,4 +1,4 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
 import app.project.jjoojjeollee.domain.user.User;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.Getter;
 @Table(name = "diary_members")
 @Getter
 public class DiaryMember {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_no")
     private Long no;
 
@@ -21,6 +21,6 @@ public class DiaryMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no")
-    private User writer;
+    private User member;
 
 }

@@ -1,6 +1,6 @@
 package app.project.jjoojjeollee.api;
 
-import app.project.jjoojjeollee.domain.Image;
+import app.project.jjoojjeollee.domain.common.Image;
 import app.project.jjoojjeollee.domain.user.User;
 import app.project.jjoojjeollee.dto.user.UserLoginParam;
 import app.project.jjoojjeollee.dto.user.UserProfileSettupParam;

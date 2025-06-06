@@ -1,6 +1,5 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.common;
 
-import app.project.jjoojjeollee.global.FileImageType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_no")
     private Long no;
 

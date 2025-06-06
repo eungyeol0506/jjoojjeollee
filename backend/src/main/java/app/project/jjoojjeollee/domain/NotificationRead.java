@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "notification_read")
 @Getter
 public class NotificationRead {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "read_no")
     private Long no;
 
@@ -22,7 +22,7 @@ public class NotificationRead {
     private Notification notification;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no", nullable = false)
+    @JoinColumn(name = "read_user_no", nullable = false)
     private User readBy;
 
 }

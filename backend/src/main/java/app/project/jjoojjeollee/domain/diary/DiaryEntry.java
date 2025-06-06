@@ -1,5 +1,7 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
+import app.project.jjoojjeollee.domain.common.Image;
+import app.project.jjoojjeollee.domain.common.ModificationInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -7,16 +9,18 @@ import lombok.Getter;
 @Table(name = "diary_entries")
 @Getter
 public class DiaryEntry {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "entry_no", updatable = false)
     private Long no;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-
     @Column(name = "contents", nullable = false)
     private String contents;
+
+    @Column(name = "writer_name")
+    private String writerName;
 
     @Embedded
     private ModificationInfo modificationInfo;

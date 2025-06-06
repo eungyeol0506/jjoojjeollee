@@ -1,5 +1,6 @@
-package app.project.jjoojjeollee.domain;
+package app.project.jjoojjeollee.domain.diary;
 
+import app.project.jjoojjeollee.domain.common.ModificationInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Table(name = "diaries")
 @Getter
 public class Diary {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_no", updatable = false)
     private Long no;
 
@@ -22,6 +23,8 @@ public class Diary {
 
     @Column(name = "hex_color")
     private String hexColor;
+    @Column(name = "announcement")
+    private String announcement;
 
     @Embedded
     private DiaryPeriod period;
@@ -32,6 +35,6 @@ public class Diary {
     @Column(name = "current_index", nullable = false)
     private int currentIndex;
 
-//    @OneToMany(mappedBy = "diary")
+//    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
 //    private List<DiaryEntry> diaryEntries;
 }
