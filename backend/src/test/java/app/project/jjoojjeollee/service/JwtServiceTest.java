@@ -23,7 +23,7 @@ class JwtServiceTest {
     @DisplayName("토큰 생성 및 parsing 성공")
     public void createAndParseToken() throws Exception{
         //given
-        User user = User.createUser("id","pw", "email");
+        User user = User.createUser("email", "pw");
         Long userNo = userRepository.save(user);
 
         //when
@@ -40,9 +40,9 @@ class JwtServiceTest {
     @DisplayName("토큰 추출 실패하는 경우")
     public void invalidToken() throws Exception{
         //given
-        User user = User.createUser("id","pw", "email");
+        User user = User.createUser("email", "pw");
         Long userNo = userRepository.save(user);
-        User user2 = User.createUser("id2","pw2", "email2");
+        User user2 = User.createUser("email", "pw");
         Long userNo2 = userRepository.save(user2);
 
         String token = jwtService.toToken(userNo);
