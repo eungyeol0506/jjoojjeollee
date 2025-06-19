@@ -18,7 +18,7 @@ class UserProfileTest {
         String message = "message";
         Image profileImage = Image.createImage("fileName.png", "0101", "resources/", "png");
 
-        User testUser = User.createUser("id", "pw", "email@email.com");
+        User testUser = User.createUser("email@email.com", "pw");
 
         //when
         testUser.setupUserProfile(nickname, message, profileImage);
@@ -38,7 +38,7 @@ class UserProfileTest {
         String lineMessage = "Domain method test";
         Image profileImage = Image.createImage("fileName.png", "0101", "resources/", "png");
 
-        User testUser = User.createUser("id", "pw", "test@email.com");
+        User testUser = User.createUser("email@email.com", "pw");
         testUser.setupUserProfile(nickname, lineMessage, profileImage);
 
         //when
@@ -55,7 +55,7 @@ class UserProfileTest {
     @DisplayName("UserProfile 이미지 삭제 메서드 테스트")
     public void removeUserProfileImage() throws Exception{
         //given
-        User testUser = User.createUser("id", "pw", "test@email.com");
+        User testUser = User.createUser("email@email.com", "pw");
 
         Image profileImage = Image.createImage("fileName.png", "0101", "/resources", "png");
         testUser.setupUserProfile("nickname","lineMessage",profileImage);
