@@ -4,6 +4,7 @@ import app.project.jjoojjeollee.domain.common.ModificationInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,9 +33,11 @@ public class Diary {
     @Embedded
     private ModificationInfo modificationInfo;
 
-    @Column(name = "current_index", nullable = false)
+    @Column(name = "current_idx", nullable = false)
     private int currentIndex;
 
+    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
+    private List<DiaryMember> diaryMembers = new ArrayList<>();
 //    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
 //    private List<DiaryEntry> diaryEntries;
 }
