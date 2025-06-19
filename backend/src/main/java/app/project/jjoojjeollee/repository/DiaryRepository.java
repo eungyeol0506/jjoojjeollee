@@ -52,4 +52,8 @@ public class DiaryRepository {
                 .getResultStream()
                 .toList();
     }
+    /**
+     * select: 일기 목록 조회 메서드
+     */
+
 }

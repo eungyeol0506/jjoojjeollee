@@ -23,4 +23,11 @@ public class DiaryMember {
     @JoinColumn(name = "user_no")
     private User member;
 
+    public static DiaryMember createDiaryMember(Diary diary, User user, int idx) {
+        DiaryMember diaryMember = new DiaryMember();
+        diaryMember.diary = diary;
+        diaryMember.member = user;
+        diaryMember.idx = idx;
+        return diaryMember;
+    }
 }

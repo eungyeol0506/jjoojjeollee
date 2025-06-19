@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.domain.diary;
 
 import app.project.jjoojjeollee.domain.common.ModificationInfo;
+import app.project.jjoojjeollee.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,7 +39,7 @@ public class Diary {
     @Column(name = "current_idx", nullable = false)
     private int currentIndex;
 
-    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DiaryMember> diaryMembers = new ArrayList<>();
 
     //    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
@@ -46,13 +47,13 @@ public class Diary {
     /**
      * 다이어리 생성 메서드
      */
-    public static Diary createDiary(String name, String hexColor, String type, int dDay, Long userNo) {
+    public static Diary createDiary(String name, String hexColor, String type, int dDay, User creator) {
         Diary diary = new Diary();
         LocalDateTime now = LocalDateTime.now();
         /* 일기 이름 */
         diary.setName(name);
         /* 표지 색상 */
-        diary.setHexColor(hexColor);
+        diary.setHexColor(hexColor.toUpperCase());
         /* 일기 타입 */
         if (type.equalsIgnoreCase("shared")){
             diary.setType(DiaryType.SHARED);
@@ -67,11 +68,33 @@ public class Diary {
         diary.setPeriod(period);
         /* 생성일 기록 */
         ModificationInfo mi = new ModificationInfo();
-        mi.setCreated(userNo, now);
+        mi.setCreated(creator.getNo(), now);
         diary.setModificationInfo(mi);
+        /* 현재 작성자 순서 */
+        int idx = 0;
+        diary.setCurrentIndex(idx);
 
-        /* 다이어리 멤버 생성 */
-
+        /* 생성자를 멤버에 추가*/
+        diary.addMember(creator, idx);
         return diary;
     }
+
+    /**
+     * 멤버 추가 메서드
+     */
+    public void addMember(User member, int idx){
+        DiaryMember diaryMember = DiaryMember.createDiaryMember(this, member, idx);
+        this.diaryMembers.add(diaryMember);
+    }
+    /**
+     * 멤버 삭제 메서드
+     */
+    public void removeMember(User member){
+
+    }
+
+    /**
+     * 삭제 메서드
+     */
+
 }
