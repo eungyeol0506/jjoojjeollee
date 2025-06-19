@@ -43,7 +43,7 @@ class JwtTokenFilterTest {
     @DisplayName("토큰이 정상적으로 주어졌을 때 filter 동작 확인")
     public void successCreateToken() throws Exception{
         //given
-        User user = User.createUser("test", "test", "test@email.com");
+        User user = User.createUser("test@email.com", "test");
         String token = "test.jwt.token";
         Long userNo = 1234L;
 
