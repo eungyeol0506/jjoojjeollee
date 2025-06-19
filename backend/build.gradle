@@ -45,13 +45,11 @@ dependencies {
 	jooqCodegen 'org.jooq:jooq-meta:3.19.23'
 	jooqCodegen 'com.mysql:mysql-connector-j'
 
-	compileOnly 'org.projectlombok:lombok'
-
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-//	runtimeOnly 'com.h2database:h2'
+	// db connector
 	runtimeOnly 'com.mysql:mysql-connector-j'
-
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -66,7 +64,7 @@ jooq {
 	configuration{
 		jdbc {
 			driver   = 'com.mysql.cj.jdbc.Driver'
-			url      = 'jdbc:mysql://localhost:3306/jjoojjeollee'
+			url      = 'jdbc:mysql://localhost:3306?allowPublicKeyRetrieval=true&useSSL=FALSE'
 			user     = 'root'
 			password = 'root'
 		}
