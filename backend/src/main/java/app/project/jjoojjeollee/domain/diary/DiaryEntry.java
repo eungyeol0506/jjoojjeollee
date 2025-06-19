@@ -19,7 +19,7 @@ public class DiaryEntry {
     @Column(name = "contents", nullable = false)
     private String contents;
 
-    @Column(name = "writer_name")
+    @Column(name = "writer_nickname")
     private String writerName;
 
     @Embedded
