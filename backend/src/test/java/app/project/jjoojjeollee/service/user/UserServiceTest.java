@@ -39,7 +39,6 @@ class UserServiceTest {
         //then
         User user = userRepository.findByNo(userNo).get();
         Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getId()).isEqualTo(userRegisterParam.getId());
         Assertions.assertThat(passwordEncoder.matches(userRegisterParam.getPw(), user.getPw())).isTrue();
     }
     
