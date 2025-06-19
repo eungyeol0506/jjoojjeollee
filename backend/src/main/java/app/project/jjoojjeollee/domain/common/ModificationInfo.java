@@ -20,4 +20,19 @@ public class ModificationInfo {
     private Long deletedBy;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void setCreated(Long createdBy, LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+    }
+
+    public void setUpdated(Long updatedBy, LocalDateTime updatedAt) {
+        this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
+    }
+
+    public void setDeleted(Long deletedBy, LocalDateTime deletedAt) {
+        this.deletedBy = deletedBy;
+        this.deletedAt = deletedAt;
+    }
 }
