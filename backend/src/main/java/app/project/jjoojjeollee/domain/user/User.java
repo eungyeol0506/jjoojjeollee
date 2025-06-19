@@ -22,9 +22,6 @@ public class User {
     @Column(name = "user_no", updatable = false)
     private Long no;
 
-    @Column(name = "id", nullable = false, length = 20)
-    private String id;
-
     @Column(name = "pw", nullable = false)
     private String pw;
 
@@ -49,9 +46,8 @@ public class User {
     /**
      *  회원가입 시 회원 생성 메서드
      */
-    public static User createUser(String id, String pw, String email){
+    public static User createUser(String email, String pw){
         User user = new User();
-        user.setId(id);
         user.setPw(pw);
         user.setEmail(email);
         user.setCreatedAt(LocalDateTime.now());
