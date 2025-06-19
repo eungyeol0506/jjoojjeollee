@@ -22,7 +22,7 @@ class UserTest {
         String email = "test@test.com";
 
         // when
-        User user = User.createUser(id, pw, email);
+        User user = User.createUser(email, pw);
 
         // then
         assertNotNull(user);
@@ -38,7 +38,7 @@ class UserTest {
         String email = "test@test.com";
 
         String nickname = "테스트!";
-        User user = User.createUser(id, pw, email);
+        User user = User.createUser(email, pw);
         //when then Create 메서드 테스트
         user.setupUserProfile(nickname,"",  null);
         assertNotNull(user.getProfile(), "프로필 객체 생성됨");
