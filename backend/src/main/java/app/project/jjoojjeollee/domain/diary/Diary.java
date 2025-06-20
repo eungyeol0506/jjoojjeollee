@@ -90,11 +90,43 @@ public class Diary {
      * 멤버 삭제 메서드
      */
     public void removeMember(User member){
+        for(DiaryMember diaryMember : this.diaryMembers){
+            if(diaryMember.getMember().equals(member)){
+                this.diaryMembers.remove(diaryMember);
+            }
+        }
+        /* idx 재정렬 */
+        int idx = 0;
+        this.diaryMembers.sort(DiaryMember::compareTo);
 
+        for(DiaryMember diaryMember : this.diaryMembers){
+            diaryMember.changeIdx(idx++);
+        }
+    }
+    /**
+     * 멤버 순서 변경 메서드
+     */
+    public void nextIdx(){
+        int nextIndex = currentIndex + 1;
+        if(nextIndex >= this.diaryMembers.size()){
+            nextIndex = 0;
+        }
+        this.currentIndex = nextIndex;
+    }
+    /**
+     * 일기 표지 수정 메서드
+     */
+    public void setupDiary(String name, String hexColor, Long userNo) {
+        this.setName(name);
+        this.setHexColor(hexColor);
+        this.modificationInfo.setUpdated(userNo, LocalDateTime.now());
     }
 
     /**
      * 삭제 메서드
      */
+    public void deleteDiary(Long userNo){
+        this.modificationInfo.setDeleted(userNo,LocalDateTime.now());
+    }
 
 }
