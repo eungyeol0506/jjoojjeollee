@@ -39,6 +39,9 @@ public class Diary {
     @Column(name = "current_idx", nullable = false)
     private int currentIndex;
 
+    @Column(name = "view_cnt", nullable = false)
+    private int viewCnt;
+
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DiaryMember> diaryMembers = new ArrayList<>();
 
@@ -73,7 +76,8 @@ public class Diary {
         /* 현재 작성자 순서 */
         int idx = 0;
         diary.setCurrentIndex(idx);
-
+        /* 조회수 */
+        diary.setViewCnt(0);
         /* 생성자를 멤버에 추가*/
         diary.addMember(creator, idx);
         return diary;
@@ -119,7 +123,26 @@ public class Diary {
     public void setupDiary(String name, String hexColor, Long userNo) {
         this.setName(name);
         this.setHexColor(hexColor);
+
+        this.changeUpdateInfo(userNo);
+    }
+    /**
+     * 일기 내 업데이트 발생 시 정보 갱신 메서드
+     */
+    public void changeUpdateInfo(Long userNo){
         this.modificationInfo.setUpdated(userNo, LocalDateTime.now());
+    }
+    /**
+     * 조회수 갱신 메서드
+     */
+    public void updateViewCnt(){
+        this.viewCnt++;
+    }
+    /**
+     * 일기 공지사항 수정 메서드
+     */
+    public void changeAnnouncement(String announcement) {
+        this.announcement = announcement;
     }
 
     /**
