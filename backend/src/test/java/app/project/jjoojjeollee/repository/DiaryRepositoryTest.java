@@ -2,6 +2,7 @@ package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.diary.Diary;
 import app.project.jjoojjeollee.domain.user.User;
+import app.project.jjoojjeollee.dto.diary.DiaryListDTO;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,7 @@ class DiaryRepositoryTest {
     }
 
     @Test
+    @DisplayName("내 프로필에서 일기 목록 조회 메서드")
     public void findByUserNo() throws Exception{
         //given
         Long userNo = 1L;
@@ -60,4 +62,14 @@ class DiaryRepositoryTest {
         assertNotNull(result2);
     }
 
+    @Test
+    @DisplayName("일기 목록 조회 메서드")
+    public void findDiaryListByUserNoTest() throws Exception{
+        //given
+        //when
+        List<DiaryListDTO> diaries = diaryRepository.findDiaryListByUserNo(1L, DiarySortOption.UPDATED_AT);
+
+        //then
+        assertNotNull(diaries);
+    }
 }
