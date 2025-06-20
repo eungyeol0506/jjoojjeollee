@@ -35,11 +35,11 @@ public class UserRepository {
         return Optional.ofNullable(em.find(User.class, no));
     }
 
-    public Optional<User> findById(String id){
-        return em.createQuery("select u from User u where u.id = :id", User.class)
-                 .setParameter("id", id)
-                 .getResultStream().findFirst();
-    }
+//    public Optional<User> findById(String id){
+//        return em.createQuery("select u from User u where u.id = :id", User.class)
+//                 .setParameter("id", id)
+//                 .getResultStream().findFirst();
+//    }
 
     public Optional<User> findByEmail(String email){
         return em.createQuery("select u from User u where u.email = :email", User.class)
