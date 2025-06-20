@@ -97,6 +97,7 @@ public class Diary {
         for(DiaryMember diaryMember : this.diaryMembers){
             if(diaryMember.getMember().equals(member)){
                 this.diaryMembers.remove(diaryMember);
+                break;
             }
         }
         /* idx 재정렬 */
@@ -108,7 +109,7 @@ public class Diary {
         }
     }
     /**
-     * 멤버 순서 변경 메서드
+     * 멤버 다음 순서로 변경 메서드
      */
     public void nextIdx(){
         int nextIndex = currentIndex + 1;
