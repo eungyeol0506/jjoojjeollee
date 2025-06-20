@@ -42,7 +42,7 @@ class UserApiTest {
         @Test
         public void successJoin() throws Exception {
             // given
-            UserRegisterParam param = new UserRegisterParam("test", "password", "test@test.com");
+            UserRegisterParam param = new UserRegisterParam("test@test.com", "password");
 
             // when then
             mockMvc.perform(post("/api/users/signup")
@@ -58,7 +58,7 @@ class UserApiTest {
         @Test
         public void failedJoinBlankId() throws Exception {
             // given
-            UserRegisterParam param = new UserRegisterParam("", "password", "test@test.com");
+            UserRegisterParam param = new UserRegisterParam("test@test.com", "password");
 
             // when then
             mockMvc.perform(post("/api/users/signup")
@@ -75,8 +75,8 @@ class UserApiTest {
         @Test
         public void failedJoinDuplicatedEmail() throws Exception{
             //given
-            UserRegisterParam param1 = new UserRegisterParam("test1", "password", "test@test.com");
-            UserRegisterParam param2 = new UserRegisterParam("test2", "password", "test@test.com");
+            UserRegisterParam param1 = new UserRegisterParam("test@test.com", "password");
+            UserRegisterParam param2 = new UserRegisterParam("test@test.com", "password");
 
             mockMvc.perform(post("/api/users/signup")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +101,7 @@ class UserApiTest {
         @Test
         public void successLogin() throws Exception{
             //given
-            UserRegisterParam registerParam = new UserRegisterParam("test", "password", "test@test.com");
+            UserRegisterParam registerParam = new UserRegisterParam("test@test.com", "password");
 
             mockMvc.perform(post("/api/users/signup")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -137,7 +137,7 @@ class UserApiTest {
         @Test
         public void failedLoginBlankEmail() throws Exception{
             //given
-            UserRegisterParam registerParam = new UserRegisterParam("test", "password", "test@test.com");
+            UserRegisterParam registerParam = new UserRegisterParam("test@test.com", "password");
 
             mockMvc.perform(post("/api/users/signup")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -158,7 +158,7 @@ class UserApiTest {
         @Test
         public void failedLoginMismatchPassword() throws Exception{
             //given
-            UserRegisterParam registerParam = new UserRegisterParam("test", "password", "test@test.com");
+            UserRegisterParam registerParam = new UserRegisterParam("test@test.com", "password");
 
             mockMvc.perform(post("/api/users/signup")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -283,7 +283,7 @@ class UserApiTest {
 
         private long createTestUser() throws Exception {
             // user 회원가입 set
-            UserRegisterParam registerParam = new UserRegisterParam("test", "password", "test@test.com");
+            UserRegisterParam registerParam = new UserRegisterParam("test@test.com", "password");
             MvcResult result = mockMvc.perform(post("/api/users/signup")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(registerParam)))
