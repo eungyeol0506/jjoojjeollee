@@ -2,10 +2,12 @@ package app.project.jjoojjeollee.domain.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Embeddable
+@Getter
 public class ModificationInfo {
     @Column(name = "created_by", nullable = false)
     private Long createdBy;
