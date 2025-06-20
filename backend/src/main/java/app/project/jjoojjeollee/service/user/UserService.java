@@ -38,13 +38,8 @@ public class UserService {
     public Long login(UserLoginParam loginParam){
         User findUser;
 
-        if(loginParam.isEmail()){
-            String email = loginParam.getId();
-            findUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        }else{
-            String id = loginParam.getId();
-            findUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        }
+        String email = loginParam.getId();
+        findUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         String pw = loginParam.getPw();
         if( !(passwordEncoder.matches(pw, findUser.getPw())) ) {
