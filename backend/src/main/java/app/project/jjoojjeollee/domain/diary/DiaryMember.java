@@ -3,11 +3,12 @@ package app.project.jjoojjeollee.domain.diary;
 import app.project.jjoojjeollee.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "diary_members")
 @Getter
-public class DiaryMember {
+public class DiaryMember implements Comparable<DiaryMember>{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_no")
     private Long no;
@@ -29,5 +30,14 @@ public class DiaryMember {
         diaryMember.member = user;
         diaryMember.idx = idx;
         return diaryMember;
+    }
+
+    @Override
+    public int compareTo(DiaryMember other) {
+        return Integer.compare(this.idx, other.idx);
+    }
+
+    public void changeIdx(int idx) {
+        this.idx = idx;
     }
 }
