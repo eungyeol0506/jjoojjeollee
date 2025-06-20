@@ -77,6 +77,7 @@ public class DiaryRepository {
                 .from(d)
                 .leftJoin(dm).on(d.DIARY_NO.eq(dm.DIARY_NO))
                 .where(d.DELETED_AT.isNull())
+                .groupBy(d.DIARY_NO)
                 .orderBy(sortField)
                 .limit(30)
                 .fetchInto(DiaryListDTO.class);
