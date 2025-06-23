@@ -11,12 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -70,6 +69,6 @@ class DiaryRepositoryTest {
         List<DiaryListDTO> diaries = diaryRepository.findDiaryListByUserNo(1L, DiarySortOption.UPDATED_AT);
 
         //then
-        assertNotNull(diaries);
+        assertFalse(diaries.isEmpty());
     }
 }
