@@ -28,7 +28,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("사용자 저장 및 조회")
     void save() {
-        User user = User.createUser("testId", "testPw", "test@test.com");
+        User user = User.createUser("test@test.com", "testPw");
 
         Long no = userRepository.save(user);
         User findUser = userRepository.findByNo(no).get();
@@ -39,7 +39,7 @@ class UserRepositoryTest {
     @DisplayName("이메일로 사용자 조회")
     @Test
     void findByEmail(){
-        User user = User.createUser("testId", "testPw", "test@test.com");
+        User user = User.createUser("test@test.com", "testPw");
         userRepository.save(user);
 
         Optional<User> findUser = userRepository.findByEmail(user.getEmail());
@@ -51,7 +51,7 @@ class UserRepositoryTest {
     @Test
     public void settupProfile() throws Exception{
         //given
-        User user = User.createUser("testId", "testPw", "test@test.com");
+        User user = User.createUser("test@test.com", "testPw");
         Long userNo = userRepository.save(user);
 
         user.setupUserProfile("테스트", null, null);
@@ -72,7 +72,7 @@ class UserRepositoryTest {
     @Test
     public void failedFindWithProfile() throws Exception{
         //given
-        User user = User.createUser("testId", "testPw", "test@test.com");
+        User user = User.createUser("test@test.com", "testPw");
         userRepository.save(user);
 
         //when

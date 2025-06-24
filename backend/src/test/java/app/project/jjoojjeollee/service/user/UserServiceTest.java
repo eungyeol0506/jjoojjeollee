@@ -31,7 +31,7 @@ class UserServiceTest {
     @Test
     public void join() throws Exception{
         //given
-        UserRegisterParam userRegisterParam = new UserRegisterParam("test", "test", "test@test.com");
+        UserRegisterParam userRegisterParam = new UserRegisterParam("test@test.com", "password");
 
         //when
         Long userNo = userService.join(userRegisterParam);
@@ -39,7 +39,6 @@ class UserServiceTest {
         //then
         User user = userRepository.findByNo(userNo).get();
         Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getId()).isEqualTo(userRegisterParam.getId());
         Assertions.assertThat(passwordEncoder.matches(userRegisterParam.getPw(), user.getPw())).isTrue();
     }
     
@@ -49,7 +48,7 @@ class UserServiceTest {
         @DisplayName("로그인 성공")
         public void loginByEmail() throws Exception{
             //given
-            userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            userService.join(new UserRegisterParam("test@test.com", "password"));
 
             UserLoginParam userLoginParamId = new UserLoginParam("test", "password");
             UserLoginParam userLoginParamEmail = new UserLoginParam("test@test.com", "password");
@@ -79,7 +78,7 @@ class UserServiceTest {
         @Test
         public void failedWithMismatchedPassword() throws Exception {
             //given
-            userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            userService.join(new UserRegisterParam("test@test.com", "password"));
 
             UserLoginParam userLoginParam = new UserLoginParam("test", "password2");
             //when
@@ -92,7 +91,7 @@ class UserServiceTest {
         @Test
         public void failedWithUnverifiedUser() throws Exception{
             //given
-            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            Long userNo = userService.join(new UserRegisterParam("test@test.com", "password"));
             userService.withdraw(userNo);
 
             UserLoginParam userLoginParam = new UserLoginParam("test", "password");
@@ -110,7 +109,7 @@ class UserServiceTest {
         @Test
         public void successSetupUserProfileWithNew() throws Exception{
             //given
-            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            Long userNo = userService.join(new UserRegisterParam("test@test.com", "password"));
             UserProfileSettupParam param = new UserProfileSettupParam("nickname", "");
             Image image = Image.createImage("filename", "savedName", "path", "png");
 
@@ -128,7 +127,7 @@ class UserServiceTest {
         @DisplayName("이미지 수정없이 닉네임/메시지만 수정하는 경우")
         public void successSetupUserProfile() throws Exception{
             //given
-            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            Long userNo = userService.join(new UserRegisterParam("test@test.com", "password"));
             UserProfileSettupParam param = new UserProfileSettupParam("nickname", "");
             Image image = Image.createImage("filename", "savedName", "path", "png");
             userService.saveUserProfile(userNo, param, image);
@@ -147,7 +146,7 @@ class UserServiceTest {
         @Test
         public void successRemoveUserProfile() throws Exception{
             //given
-            Long userNo = userService.join(new UserRegisterParam("test", "password", "test@test.com"));
+            Long userNo = userService.join(new UserRegisterParam("test@test.com", "password"));
             Image image = Image.createImage("filename", "savedName", "path", "png");
             userService.saveUserProfile(userNo, new UserProfileSettupParam("nickname", "new message"), image);
 

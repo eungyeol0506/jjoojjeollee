@@ -1,19 +1,16 @@
 package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.diary.Diary;
-import app.project.jjoojjeollee.dto.diary.DiaryDetailData;
-import app.project.jjoojjeollee.dto.diary.DiaryEntryDto;
+import app.project.jjoojjeollee.dto.diary.DiaryListDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.Result;
+import org.jooq.SortField;
 import org.springframework.stereotype.Repository;
+import target.tables.Diaries;
+import target.tables.DiaryMembers;
 
-import static org.jooq.impl.DSL.*;
-import static target.tables.Diaries.DIARIES;
-import static target.tables.DiaryEntries.DIARY_ENTRIES;
-import static target.tables.Images.IMAGES;
-import static target.tables.Comments.COMMENTS;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,35 +32,73 @@ public class DiaryRepository {
     }
 
     /**
-     * select: 상세보기
+     * select: 내 프로필에서 일기 목록 조회 메서드
      */
-    public DiaryDetailData findByNo(Long no) {
-        return dsl.select(
-                                    DIARIES.DIARY_NO,
-                                    DIARIES.NAME,
-                                    DIARIES.HEX_COLOR,
-                                    multiset(
-                                        select(DIARY_ENTRIES.ENTRY_NO,
-                                                DIARY_ENTRIES.TITLE,
-                                                DIARY_ENTRIES.CONTENTS,
-                                                DIARY_ENTRIES.WRITER_NAME,
-                                                DIARY_ENTRIES.CREATED_BY,
-                                                IMAGES.IMAGE_NO,
-                                                IMAGES.STORED_FILE_PATH,
-                                                IMAGES.STORED_FILE_NAME,
-                                                IMAGES.EXTENSION
-                                                )
-                                            .from(DIARY_ENTRIES)
-                                            .leftJoin(IMAGES).on(IMAGES.IMAGE_NO.eq(DIARY_ENTRIES.IMAGE_NO))
-//                                            .leftJoin(COMMENTS).on(COMMENTS.ENTRY_NO.eq(DIARY_ENTRIES.ENTRY_NO))
-                                            .where(DIARY_ENTRIES.DIARY_NO.eq(DIARIES.DIARY_NO))
+    public List<Diary> findDiariesByUserNo(Long userNo) {
+        return em.createQuery("select d from Diary d " +
+                        "left join fetch d.diaryMembers dm " +
+                        "left join fetch dm.member m " +
+                        "where d.modificationInfo.createdBy = :userNo" +
+                        " and d.modificationInfo.deletedAt is null", Diary.class)
+                .setParameter("userNo", userNo)
+                .getResultStream()
+                .toList();
+    }
 
-                                            .orderBy(DIARY_ENTRIES.CREATED_AT)
-                                        ).as("diaryEntries")
-                                            .convertFrom(r -> r.into(DiaryEntryDto.class))
-                                    )
-                                    .from(DIARIES)
-                                    .where(DIARIES.DIARY_NO.eq(no))
-                                    .fetchOneInto(DiaryDetailData.class);
+    public List<Diary> findSharedDiariesByUserNo(Long userNo) {
+        return em.createQuery("select d from Diary d " +
+                        "left join fetch d.diaryMembers dm " +
+                        "left join fetch dm.member m " +
+                        "where dm.member.no = :userNo" +
+                        " and d.modificationInfo.createdBy <> :userNo" +
+                        " and d.modificationInfo.deletedAt is null", Diary.class)
+                .setParameter("userNo", userNo)
+                .getResultStream()
+                .toList();
+    }
+    /**
+     * select: 일기 목록 조회 메서드
+     */
+    public List<DiaryListDTO> findDiaryListByUserNo(Long userNo, DiarySortOption sortOption) {
+        SortField<?> sortField = getSortField(sortOption);
+
+        Diaries d = Diaries.DIARIES.as("d");
+        DiaryMembers dm = DiaryMembers.DIARY_MEMBERS.as("dm");
+
+        return dsl.select(
+                d.DIARY_NO,
+                d.NAME,
+                d.HEX_COLOR,
+                d.ANNOUNCEMENT,
+                d.TYPE,
+                d.END_AT
+                /*함께하는 멤버 수*/
+            )
+                .from(d)
+                .leftJoin(dm).on(d.DIARY_NO.eq(dm.DIARY_NO))
+                .where(d.DELETED_AT.isNull())
+                .groupBy(d.DIARY_NO)
+                .orderBy(sortField)
+                .limit(30)
+                .fetchInto(DiaryListDTO.class);
+
+    }
+
+    private SortField<?> getSortField(DiarySortOption option) {
+        Diaries d = Diaries.DIARIES.as("d");
+        SortField<?> sortField;
+        switch (option) {
+            case UPDATED_AT:
+                sortField = d.UPDATED_AT.desc();
+            case CREATED_AT:
+                sortField = d.CREATED_AT.desc();
+            case NAME:
+                sortField = d.NAME.asc();
+            case VIEW_CNT:
+                sortField = d.VIEW_CNT.desc();
+            default:
+                sortField = d.UPDATED_AT.desc();
+        }
+        return sortField;
     }
 }

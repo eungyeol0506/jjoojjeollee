@@ -11,5 +11,4 @@ public class DiaryDetailData {
     private String name;
     private String hexColor;
 
-    private List<DiaryEntryDto> diaryEntries;
 }

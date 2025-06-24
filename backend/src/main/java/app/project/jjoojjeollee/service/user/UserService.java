@@ -25,9 +25,8 @@ public class UserService {
      */
     @Transactional
     public Long join(UserRegisterParam userRegisterParam){
-        User user = User.createUser( userRegisterParam.getId(),
-                                     passwordEncoder.encode(userRegisterParam.getPw()),
-                                     userRegisterParam.getEmail()
+        User user = User.createUser( userRegisterParam.getEmail(),
+                                     passwordEncoder.encode(userRegisterParam.getPw())
                                     );
         // email 인증 로직 미구현으로 우선 항상 인증처리 함
         user.verify();
@@ -39,13 +38,8 @@ public class UserService {
     public Long login(UserLoginParam loginParam){
         User findUser;
 
-        if(loginParam.isEmail()){
-            String email = loginParam.getId();
-            findUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        }else{
-            String id = loginParam.getId();
-            findUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        }
+        String email = loginParam.getId();
+        findUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         String pw = loginParam.getPw();
         if( !(passwordEncoder.matches(pw, findUser.getPw())) ) {
