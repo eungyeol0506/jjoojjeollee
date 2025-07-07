@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "diary_entries")
@@ -39,6 +41,10 @@ public class DiaryEntry {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_no")
     private Image image;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_no")
+    private List<Comment> comments = new ArrayList<>();
 
     /**
      *  일기 작성 메서드
