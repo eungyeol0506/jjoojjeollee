@@ -121,11 +121,11 @@ public class Diary {
     /**
      * 일기 표지 수정 메서드
      */
-    public void setupDiary(String name, String hexColor, Long userNo) {
+    public void setupDiary(String name, String hexColor) {
         this.setName(name);
         this.setHexColor(hexColor);
 
-        this.changeUpdateInfo(userNo);
+        this.changeUpdateInfo(this.modificationInfo.getCreatedBy());
     }
     /**
      * 일기 내 업데이트 발생 시 정보 갱신 메서드

@@ -74,7 +74,12 @@ public class DiaryEntry {
         this.image = image;
         this.modificationInfo.setUpdated( this.modificationInfo.getCreatedBy(), LocalDateTime.now());
     }
-
+    /**
+     * 일기 삭제 메서드
+     */
+    public void deleteDiaryEntry() {
+        this.modificationInfo.setDeleted(this.modificationInfo.getCreatedBy(), LocalDateTime.now());
+    }
     /**
      * 비공개로 수정 메서드 - 컬럼추가해야함
      */

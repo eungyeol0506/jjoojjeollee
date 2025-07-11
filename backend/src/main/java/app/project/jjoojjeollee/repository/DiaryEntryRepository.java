@@ -54,7 +54,7 @@ public class DiaryEntryRepository {
                 i.EXTENSION,
                 i.STORED_FILE_PATH,
                 i.STORED_FILE_NAME,
-                        DSL.coalesce(DSL.field("cc.comment_count", Integer.class), 0).as("comment_count")
+                DSL.coalesce(DSL.field("cc.comment_count", Integer.class), 0).as("comment_count")
                 )
                 .from(d)
                 .leftJoin(de).on(d.DIARY_NO.eq(de.DIARY_NO))
@@ -68,9 +68,10 @@ public class DiaryEntryRepository {
     /**
      * 일기장 상세 조회
      */
-    public DiaryEntry findByEntryNo(Long entryNo, Long userNo){
+    public DiaryEntry findByEntryNo(Long entryNo){
         return em.createQuery("select de from DiaryEntry de " +
                             "left join fetch de.image " +
+                            "left join fetch de.diary " +
                             "where de.no = :entryNo", DiaryEntry.class)
                 .setParameter("entryNo", entryNo)
                 .getSingleResult();
@@ -82,5 +83,12 @@ public class DiaryEntryRepository {
     /**
      * 작성 메서드
      */
+    public Long writeDiaryEntry(DiaryEntry diaryEntry){
+        if (diaryEntry.getNo() != null) {
+            throw new IllegalStateException("Diary Entry already exists");
+        }
 
+        em.persist(diaryEntry);
+        return diaryEntry.getNo();
+    }
 }

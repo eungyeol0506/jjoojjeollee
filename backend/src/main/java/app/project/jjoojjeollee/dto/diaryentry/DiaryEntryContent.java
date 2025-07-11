@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class DiaryEntryWriteParam {
-    private Long diaryNo;
-    private DiaryEntryContent entryContent;
+public class DiaryEntryContent {
+    private String title;
+    private String contents;
 }

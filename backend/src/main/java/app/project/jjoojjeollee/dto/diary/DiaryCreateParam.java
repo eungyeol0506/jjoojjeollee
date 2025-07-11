@@ -13,6 +13,6 @@ public class DiaryCreateParam {
     private String name;
     private String type;
     private String hexColor;
-    private LocalDate expiryDate;
+    private int dDay;
 
 }

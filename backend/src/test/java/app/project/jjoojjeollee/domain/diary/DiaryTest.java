@@ -1,14 +1,10 @@
 package app.project.jjoojjeollee.domain.diary;
 
 import app.project.jjoojjeollee.domain.user.User;
-import app.project.jjoojjeollee.repository.DiarySortOption;
-import app.project.jjoojjeollee.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
@@ -42,7 +38,7 @@ class DiaryTest {
         Diary diary = getTestDiaryData();
 
         //when
-        diary.setupDiary("new Name","ff0000", 0L);
+        diary.setupDiary("new Name","ff0000");
         diary.changeAnnouncement("공지사항");
 
         //then
