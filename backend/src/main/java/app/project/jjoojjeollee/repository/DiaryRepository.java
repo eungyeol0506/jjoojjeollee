@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
 import org.jooq.Table;
-import org.jooq.User;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 import target.tables.*;
@@ -70,7 +69,7 @@ public class DiaryRepository {
     }
 
     /**
-     * select: 일기 목록 조회 메서드
+     * select: 홈에서 일기 목록 조회 메서드
      */
     public List<DiaryData> findDiariesByUserNo(Long userNo, DiarySortOption sortOption, String keyword) {
         SortField<?> sortField = getSortField(sortOption);
@@ -90,7 +89,7 @@ public class DiaryRepository {
                             .over().partitionBy(d.DIARY_NO)
                             .as("memberCnt"))
                 .from(d)
-                .leftJoin(dm).on(d.DIARY_NO.eq(dm.DIARY_NO))
+                .join(dm).on(d.DIARY_NO.eq(dm.DIARY_NO))
                 .where(d.DELETED_AT.isNull(),
                         keyword != null ? d.NAME.likeIgnoreCase("%"+keyword+"%") : null,
                         dm.USER_NO.eq(userNo))
