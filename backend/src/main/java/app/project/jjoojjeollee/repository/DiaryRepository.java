@@ -1,6 +1,7 @@
 package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.diary.Diary;
+import app.project.jjoojjeollee.domain.diary.DiaryMember;
 import app.project.jjoojjeollee.dto.diary.DiaryData;
 import app.project.jjoojjeollee.dto.diary.DiaryMemberData;
 import app.project.jjoojjeollee.dto.diary.DiarySortOption;
@@ -34,6 +35,10 @@ public class DiaryRepository {
         return diary.getNo();
     }
 
+    public Long save(DiaryMember diaryMember) {
+        em.persist(diaryMember);
+        return diaryMember.getNo();
+    }
     /**
      * 일기 정보 조회
      */
