@@ -7,7 +7,6 @@ import app.project.jjoojjeollee.dto.diary.DiaryData;
 import app.project.jjoojjeollee.dto.diary.DiaryMemberData;
 import app.project.jjoojjeollee.dto.diary.DiarySortOption;
 import org.assertj.core.api.Assertions;
-import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import java.util.List;
 @ActiveProfiles("test")
 @Transactional
 class DiaryRepositoryTest {
-    @Autowired
-    DSLContext dsl;
 
     @Autowired
     DiaryRepository diaryRepository;
