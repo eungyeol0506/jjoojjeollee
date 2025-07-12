@@ -1,8 +1,9 @@
 package app.project.jjoojjeollee.dto.diaryentry;
 
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 public class DiaryEntryFindParam {
     private Long diaryNo;
     private int month;
