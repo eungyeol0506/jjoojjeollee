@@ -2,7 +2,7 @@ package app.project.jjoojjeollee.repository;
 
 import app.project.jjoojjeollee.domain.diary.DiaryEntry;
 import app.project.jjoojjeollee.dto.diaryentry.DiaryEntryFindParam;
-import app.project.jjoojjeollee.dto.diaryentry.DiaryEntryListDto;
+import app.project.jjoojjeollee.dto.diaryentry.DiaryEntryData;
 import app.project.jjoojjeollee.dto.diaryentry.DiaryEntrySortOption;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -27,43 +27,43 @@ public class DiaryEntryRepository {
     /**
      * 일기장 목록 조회
      */
-    public List<DiaryEntryListDto> findByDiaryNo(DiaryEntryFindParam param){
+    public List<DiaryEntryData> findByDiaryNo(DiaryEntryFindParam param){
         Diaries d = Diaries.DIARIES.as("d");
         DiaryEntries de = DiaryEntries.DIARY_ENTRIES.as("de");
         Images i = Images.IMAGES.as("i");
         Comments c = Comments.COMMENTS.as("c");
 
-        Table<?> commentCountSubQuery = DSL
-                .select(c.ENTRY_NO, DSL.count().as("comment_cnt"))
-                .from(c)
-                .asTable("cc");
         Long diaryNo = param.getDiaryNo();
         DiaryEntrySortOption orderby = param.getOrderBy();
 
-        return dsl.select(d.DIARY_NO,
-                d.NAME,
-                d.ANNOUNCEMENT,
-                d.VIEW_CNT,
-                d.CURRENT_IDX,
-                de.ENTRY_NO,
-                de.TITLE,
-                de.CONTENTS,
-                de.CREATED_BY,
-                de.CREATED_AT,
-                de.UPDATED_AT,
-                i.EXTENSION,
-                i.STORED_FILE_PATH,
-                i.STORED_FILE_NAME,
-                DSL.coalesce(DSL.field("cc.comment_count", Integer.class), 0).as("comment_count")
-                )
+        return dsl.select(d.DIARY_NO.as("diaryNo"),
+                        d.NAME,
+                        d.ANNOUNCEMENT,
+                        d.VIEW_CNT.as("viewCnt"),
+                        d.CURRENT_IDX.as("currentIdx"),
+                        de.ENTRY_NO.as("entryNo"),
+                        de.TITLE,
+                        de.CONTENTS,
+                        de.WRITER_NICKNAME.as("writerNickname"),
+                        de.CREATED_BY.as("createdBy"),
+                        de.CREATED_AT.as("createdAt"),
+                        de.UPDATED_AT.as("updatedAt"),
+                        i.STORED_FILE_PATH.as("storedFilePath"),
+                        i.STORED_FILE_NAME.as("storedFileName"),
+                        i.EXTENSION,
+                        DSL.count(c.COMMENT_NO)
+                            .over().partitionBy(d.DIARY_NO)
+                            .as("commentCnt"))
+//                DSL.coalesce(DSL.field("cc.comment_count", Integer.class), 0).as("comment_count")
+//                )
                 .from(d)
-                .leftJoin(de).on(d.DIARY_NO.eq(de.DIARY_NO))
-                .leftJoin(i).on(de.IMAGE_NO.eq(i.IMAGE_NO))
-                .leftJoin(commentCountSubQuery).on(de.ENTRY_NO.eq(DSL.field("cc.entry_no", Long.class)))
-                .where(de.DELETED_AT.isNull())
-                .and(d.DIARY_NO.eq(diaryNo))
+                .leftJoin(de).on(de.DIARY_NO.eq(d.DIARY_NO))
+                .leftJoin(i).on(i.IMAGE_NO.eq(de.IMAGE_NO))
+                .leftJoin(c).on(c.ENTRY_NO.eq(de.ENTRY_NO))
+                .where(de.DELETED_AT.isNull(),
+                        d.DIARY_NO.eq(diaryNo))
                 .orderBy(DSL.field(orderby.getValue(), String.class))
-                .fetchInto(DiaryEntryListDto.class);
+                .fetchInto(DiaryEntryData.class);
     }
     /**
      * 일기장 상세 조회
